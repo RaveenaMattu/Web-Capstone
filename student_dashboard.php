@@ -10,23 +10,16 @@ require('database.php');
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Learning Pod - Login Form</title>
+  <title>Learning Pod - Student Dashboard</title>
   <link rel="stylesheet" href="css/app.css" />
 </head>
 <body>
   <div class="logo"></div>
   <main>
+    <p>Welcome, <?php echo $_SESSION['fullName'];?>!</p>
   </main>
   <footer>
     © 2025 SMART Learning Pod by Raveena Mattu. All Rights Reserved.
   </footer>
-    <script>
-    document.querySelectorAll('.role').forEach(role => {
-      role.addEventListener('click', function () {
-        document.querySelectorAll('.role').forEach(r => r.classList.remove('active'));
-        this.classList.add('active');
-      });
-    });
-  </script>
 </body>
 </html>

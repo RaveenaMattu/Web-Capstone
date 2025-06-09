@@ -25,7 +25,7 @@ require('database.php');
         </div>
         <form action="login.php" method="POST" class="login-form">
           <input type="email" name="email" placeholder="Enter your email" required>
-          <input type="password" name="password" placeholder="Enter your password" required>
+          <input type="password" name="password" placeholder="Enter your password">
           <button type="submit">Login</button>
         </form>
       </div>
