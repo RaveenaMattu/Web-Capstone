@@ -1,6 +1,14 @@
 <?php
-session_start();
-require('database.php');
+
+ require_once('database.php');
+ $username = $_SESSION['fullName'];
+
+$queryAdmin = 'SELECT * FROM admins WHERE username = :username';
+$statement1 = $db->prepare($queryAdmin);
+$statement1->bindValue(':username', $username);
+$statement1->execute();
+$admin = $statement1->fetch();
+$statement1->closeCursor();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +28,11 @@ require('database.php');
       <a href="#">Manage Courses</a>
       <a href="#">Tasks</a>
     </nav>
-    <div class="user-info">Hi, Admin <div class="profile-circle" href="login.php"></div></div>
+    <div class="user-info">Hi, <?php echo $_SESSION['fullName']; ?>
+      <div class="profile-circle">
+        <img src="<?php echo htmlspecialchars('./images/' . $admin['imageName']); ?>" width="40" height="40" alt="Profile Picture">
+      </div>
+    </div>
   </header>
 
   <main class="main-content">

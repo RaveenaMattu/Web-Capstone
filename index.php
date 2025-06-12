@@ -1,5 +1,5 @@
-
 <?php
+
 session_start();
 
 
@@ -17,7 +17,7 @@ session_start();
     <div class="loginBox">
       <div class="loginForm">
         <h4>Admin Login</h4>
-        <form action="admin_dashboard.php" method="POST" class="login-form">
+        <form action="login.php" method="POST" class="login-form">
           <input type="hidden" name="role" value="admin">
           <input type="email" name="email" placeholder="Enter your email">
           <input type="password" name="password" placeholder="Enter your password">
