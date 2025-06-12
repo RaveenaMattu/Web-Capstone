@@ -113,7 +113,7 @@ main {
   background-color: #1d4ed8;
 }
 
-.login-form a {
+.login-form > a {
   text-decoration: none;
   color: #2563eb;
   font-weight: 400;
@@ -244,6 +244,31 @@ footer {
   font-size: .9em;
   border-top: 1px solid #ddd;
   color: #555;
+}
+/*************************************************/
+                /* LOG OUT STYLES */
+/*************************************************/
+.logOutBox {
+  position: fixed;
+  top: 120px;
+  right: 30px;
+  z-index: 10;
+  padding:20px 30px;
+  background: #ffffff;
+  height: 90px;
+  width: 170px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  visibility: hidden;
+}
+.logOutBox > a {
+  text-decoration: none;
+  color: #2563eb;
+  font-weight: 400;
+  font-size: 1em;
+  display: block;
+  text-align: right;
+  margin-bottom: 10px;
 }
 /*************************************************/
             /* DATABASE ERROR STYLES */

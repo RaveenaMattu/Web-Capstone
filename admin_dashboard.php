@@ -16,6 +16,7 @@ $statement1->closeCursor();
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Learning Pod - Admin Dashboard</title>
+  <script src="scripts/app.js" defer></script>
   <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
@@ -29,10 +30,16 @@ $statement1->closeCursor();
       <a href="#">Tasks</a>
     </nav>
     <div class="user-info">Hi, <?php echo $_SESSION['fullName']; ?>
-      <div class="profile-circle">
-        <img src="<?php echo htmlspecialchars('./images/' . $admin['imageName']); ?>" width="40" height="40" alt="Profile Picture">
+      <div class="profile-wrapper">
+          <div class="profile-circle">
+          <img src="<?php echo htmlspecialchars('./images/' . $admin['imageName']); ?>" width="40" height="40" alt="Profile Picture" id="profilePicture">
+        </div>
+        <div class="logOutBox">
+        <a href="update.php">Update Profile</a>
+        <a href="admin_logout.php">Log Out</a>
       </div>
-    </div>
+      </div>      
+    </div>  
   </header>
 
   <main class="main-content">
