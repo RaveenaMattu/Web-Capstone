@@ -9,6 +9,7 @@ $statement1->bindValue(':username', $username);
 $statement1->execute();
 $admin = $statement1->fetch();
 $statement1->closeCursor();
+$imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.jpg';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +33,7 @@ $statement1->closeCursor();
     <div class="user-info">Hi, <?php echo $_SESSION['fullName']; ?>
       <div class="profile-wrapper">
           <div class="profile-circle">
-          <img src="<?php echo htmlspecialchars('./images/' . $admin['imageName']); ?>" width="40" height="40" alt="Profile Picture" id="profilePicture">
+          <img src="<?php echo htmlspecialchars('./images/' . $imageFile); ?>" width="40" height="40" style="border: 50%;" alt="Profile Picture" id="profilePicture">
         </div>
         <div class="logOutBox">
         <a href="update.php">Update Profile</a>
