@@ -3,7 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 body {
   background-color: #f4f6fa;
@@ -140,7 +140,8 @@ main {
   color: #2563eb;
   font-weight: 600;
   font-size: 1em;
-  margin-left: 20px;
+  letter-spacing: 0.1px;
+  
 }
 .button {
   border: 2px solid #2563eb;
@@ -150,6 +151,8 @@ main {
   font-size: 1em;
   cursor: pointer;
   padding: 10px 50px;
+  margin-left: 20px;
+
 }
 #index {
   display: grid;
@@ -253,7 +256,7 @@ footer {
   top: 120px;
   right: 30px;
   z-index: 10;
-  padding:20px 30px;
+  padding:20px 20px;
   background: #ffffff;
   height: 90px;
   width: 170px;
@@ -265,7 +268,7 @@ footer {
   text-decoration: none;
   color: #2563eb;
   font-weight: 400;
-  font-size: 1em;
+  font-size: .9em;
   display: block;
   text-align: right;
   margin-bottom: 10px;
@@ -488,4 +491,129 @@ footer {
   font-size: 1em;
   color: #000;
   text-align: center;
+}
+/*************************************************/
+              /* UPDATE ADMIN STYLES */
+/*************************************************/
+#updateAdmin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 7;
+  background-color: rgba(255, 255, 255, 0.961);
+  display: grid;
+  place-items: center;
+  visibility: hidden;
+}
+.updateAdminBox {
+  width: 60%;
+  margin: 40px auto;
+  padding: 50px 70px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.updateAdminBox h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 500;
+  font-size: 2em;
+  color: #2f65f9;
+}
+
+.adminProfile {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 70px;
+  place-items: center;
+}
+
+.adminImage {
+  text-align: center;
+}
+
+.adminImage img {
+  width: 350px;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid #2f65f9;
+}
+.adminDetails {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.adminDetails form {
+  display: grid;
+  grid-auto-flow: row;
+  width: 90%;
+}
+
+
+.adminDetails label {
+  margin: 10px 0 4px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.adminDetails input[type="text"],
+.adminDetails input[type="email"]{
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 100%;
+  color: #706f6f;
+}
+
+.adminDetails small {
+  font-size: 12px;
+  color: #777;
+  margin-top: 2px;
+}
+
+.adminDetails button {
+  margin-top: 16px;
+  padding: 10px;
+  background: #2f65f9;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.adminDetails button:hover {
+  background: #1c47c2;
+}
+
+.adminDetails a {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #444;
+  text-decoration: none;
+}
+
+.adminDetails a:hover {
+  text-decoration: underline;
+}
+
+  input[type="file"]::file-selector-button {
+  background: #0095ff;
+  color: #fff;
+  border: none;
+  padding: 0.6em 1em;
+  cursor: pointer;
+  border-radius: 4px;
+}
+#cancel {
+  background: #444;
+  cursor: pointer;
 }

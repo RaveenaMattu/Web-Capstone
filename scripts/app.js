@@ -25,3 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 /**************************************/
+/*             UPDATE ADMIN           */
+/**************************************/
+let updateAdmin = document.querySelector('#updateAdmin');
+function openUpdateAdmin() {
+  updateAdmin.style.visibility = 'visible';
+}
+function closeUpdateAdmin() {
+  updateAdmin.style.visibility = 'hidden';
+}

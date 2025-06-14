@@ -21,7 +21,7 @@ require('database.php');
         <h4>Login As</h4>
         <div class="roleToggle">
           <span class="role active">Instructor</span>
-          <span class="role">Student</span>
+          <span class="role">admin</span>
         </div>
         <form action="login.php" method="POST" class="login-form">
           <input type="email" name="email" placeholder="Enter your email" required>
