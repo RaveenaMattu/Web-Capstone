@@ -617,3 +617,45 @@ footer {
   background: #444;
   cursor: pointer;
 }
+/*************************************************/
+        /* ADMIN MANAGE INSTRUCTOR STYLES */
+/*************************************************/
+#manageInstructorMain {
+  padding: 50px 100px;
+  margin: 0;
+  align-items: start;
+}
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+}
+td {
+  vertical-align: middle;
+  text-align: center;     
+}
+
+td form {
+  margin: 0;              
+  display: inline-block;   
+}
+
+th {
+  background-color: #353434;
+  color: #fff;
+  font-weight: 400;
+}
+#manageInstructorMain > p > a {
+  text-decoration: none;
+  color: #2563eb;
+  font-weight: 600;
+  font-size: 1em;
+  text-align: center;
+}
