@@ -36,7 +36,7 @@ if ($image && $image['error'] === UPLOAD_ERR_OK) {
             }
         }
     } else {
-        echo "❌ Failed to upload image to $target";
+        echo "Failed to upload image to $target";
         exit();
     }
 }
