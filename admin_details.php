@@ -19,7 +19,7 @@
             <label for="lastName">Email:</label>
             <input type="email" id="email" name="emailAddress" required value="<?php echo $admin['emailAddress']; ?>"><br>
             <button type="submit">Update Profile</button>
-            <button onclick="closeUpdateAdmin();" id="cancel">Cancel</button>
+            <button onclick="closeUpdateAdmin();" class="cancel">Cancel</button>
           </form>
         </div>
       </div>

@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
  require_once('database.php');
  $username = $_SESSION['fullName'];
@@ -11,6 +14,12 @@ $statement1->execute();
 $admin = $statement1->fetch();
 $statement1->closeCursor();
 $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.jpg';
+
+$queryInstructors = 'SELECT * FROM instructors';
+$statement = $db->prepare($queryInstructors);
+$statement->execute();
+$instructors = $statement->fetchAll();
+$statement->closeCursor();
 
 ?>
 <!DOCTYPE html>
@@ -49,8 +58,18 @@ $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.
   <main class="main-content">
     <section class="stats">
       <div class="stat-box"><p>Total Courses</p><h2>4</h2></div>
-      <div class="stat-box"><p>Total admins</p><h2>12</h2></div>
-      <div class="stat-box"><p>Total Instructors</p><h2>5</h2></div>
+      <div class="stat-box"><p>Total Students</p><h2>12</h2></div>
+      <div class="stat-box"><p>Total Instructors</p>
+        <h2>
+          <?php
+            if (count($instructors) > 0) {
+              echo count($instructors);
+            } else {
+              echo "-";
+            }
+          ?>
+        </h2>
+      </div>
       <div class="stat-box"><p>Pending Tasks</p><h2>8</h2></div>
     </section>
 

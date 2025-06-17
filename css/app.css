@@ -76,7 +76,7 @@ main {
 
 .login-form {
   display: grid;
-  gap: 30px;
+  gap: 20px;
   width: 100%;
 }
 
@@ -549,22 +549,25 @@ footer {
   width: 100%;
 }
 
-.adminDetails form {
+ form {
   display: grid;
   grid-auto-flow: row;
   width: 90%;
 }
 
 
-.adminDetails label {
+ label {
   margin: 10px 0 4px;
   font-weight: 500;
   color: #333;
   font-size: 14px;
 }
 
-.adminDetails input[type="text"],
-.adminDetails input[type="email"]{
+ input[type="text"],
+ input[type="email"], textarea,
+ input[type="password"],
+ input[type="tel"],
+ input[type="date"] {
   padding: 8px 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -573,13 +576,13 @@ footer {
   color: #706f6f;
 }
 
-.adminDetails small {
+ small {
   font-size: 12px;
   color: #777;
   margin-top: 2px;
 }
 
-.adminDetails button {
+ button {
   margin-top: 16px;
   padding: 10px;
   background: #2f65f9;
@@ -590,18 +593,18 @@ footer {
   cursor: pointer;
 }
 
-.adminDetails button:hover {
+ button:hover {
   background: #1c47c2;
 }
 
-.adminDetails a {
+ .adminDetails a {
   margin-top: 12px;
   font-size: 13px;
   color: #444;
   text-decoration: none;
 }
 
-.adminDetails a:hover {
+ .adminDetails a:hover {
   text-decoration: underline;
 }
 
@@ -613,9 +616,15 @@ footer {
   cursor: pointer;
   border-radius: 4px;
 }
-#cancel {
-  background: #444;
+.cancel {
+  background: transparent;
   cursor: pointer;
+  background: transparent;
+  border: 1px solid #ccc;
+  color: #333;
+}
+.cancel:hover {
+  background: #eee;
 }
 /*************************************************/
         /* ADMIN MANAGE INSTRUCTOR STYLES */
@@ -629,17 +638,17 @@ footer {
 table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
+  background: transparent;
 }
 
 th, td {
-  text-align: left;
-  padding: 10px 20px;
-  border: 1px solid #ddd;
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
 td {
   vertical-align: middle;
-  text-align: center;     
+  text-align: left;     
 }
 
 td form {
@@ -648,7 +657,7 @@ td form {
 }
 
 th {
-  background-color: #353434;
+  background-color: #474747;
   color: #fff;
   font-weight: 400;
 }
@@ -659,3 +668,158 @@ th {
   font-size: 1em;
   text-align: center;
 }
+a i {
+  font-size: 1.2em;
+  margin: 0 20px;
+  color: #333;
+}
+
+a i:hover {
+  color: #007bff;
+}
+
+/*************************************************/
+        /* ADMIN ADD INSTRUCTOR STYLES */
+/*************************************************/
+#addInstructorMain {
+  padding: 40px 20px;
+  background-color: #f6f8fa;
+}
+#addInstructorMain h2 {
+  color: #2563eb;
+  margin-bottom: 20px;
+}
+#addInstructorForm {
+  background-color: #fff;
+  padding: 40px 30px;
+  padding-left: 50px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Form Rows */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+/* Each Form Group */
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+
+/* Input Fields & Labels */
+label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+  margin-top: 20px;
+  font-size: 1em;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="date"],
+textarea,
+input[type="file"] {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+input[type="file"] {
+  border: none;
+  padding: 0;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #0077cc;
+}
+
+/* Button Styling */
+.inline-form {
+  display: inline;
+  margin-right: 6px;
+}
+
+.inline-form input[type="submit"] {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* View button: Blue */
+.viewBtn {
+  background-color: #007BFF;
+}
+.viewBtn:hover {
+  background-color: #0056b3;
+}
+
+/* Update button: Green */
+.updateBtn {
+  background-color: #28a745;
+}
+.updateBtn:hover {
+  background-color: #1e7e34;
+}
+
+/* Delete button: Red */
+.deleteBtn {
+  background-color: #dc3545;
+}
+.deleteBtn:hover {
+  background-color: #c82333;
+}
+#deletePopup {
+      display: none;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -30%);
+      background-color: white;
+      border: 1px solid #aaa;
+      padding: 50px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.25);
+      z-index: 5;
+      width: 40em;
+      height: 15em;
+    }
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; 
+      left: 0;
+      width: 100%; 
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 3;
+    }
+    #delete {
+      background: #ae0d01;
+    }
+    #delete:hover {
+      background: #0056b3;
+    }
+    #deleteConfirm {
+      padding-bottom: 40px;
+    }

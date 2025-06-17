@@ -34,3 +34,30 @@ function openUpdateAdmin() {
 function closeUpdateAdmin() {
   updateAdmin.style.visibility = 'hidden';
 }
+/**************************************/
+/*        OPEN DELETE POPUP           */
+/**************************************/
+
+  const overlay = document.querySelector('#overlay');
+  const deletePopup = document.querySelector('#deletePopup');
+  const popupStudentID = document.querySelector('#popupStudentID');
+  const deleteForm = document.querySelectorAll('.deleteForm');
+
+  function showDeletePopup(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const studentID = form.querySelector('input[name="studentID"]').value;
+    popupStudentID.value = studentID;
+    overlay.style.display = 'block';
+    deletePopup.style.display = 'block';
+  }
+
+  document.querySelectorAll('.deleteForm').forEach(form => {
+    form.addEventListener('submit', showDeletePopup);
+  });
+
+  function closePopup() {
+    deletePopup.style.display = 'none';
+    overlay.style.display = 'none';
+    popupStudentID.value = '';
+  }
