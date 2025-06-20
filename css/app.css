@@ -648,7 +648,7 @@ th, td {
 }
 td {
   vertical-align: middle;
-  text-align: left;     
+  text-align: center;     
 }
 
 td form {
@@ -661,20 +661,18 @@ th {
   color: #fff;
   font-weight: 400;
 }
-#manageInstructorMain > p > a {
+#manageInstructorMain > p > button {
   text-decoration: none;
   color: #2563eb;
   font-weight: 600;
   font-size: 1em;
   text-align: center;
 }
-a i {
-  font-size: 1.2em;
-  margin: 0 20px;
+button i {
   color: #333;
 }
 
-a i:hover {
+button i:hover {
   color: #007bff;
 }
 
@@ -707,6 +705,9 @@ a i:hover {
   display: flex;
   flex-wrap: wrap;
   margin-top: 10px;
+}
+.form-row button {
+  margin-left: 20px;
 }
 
 /* Each Form Group */
@@ -757,69 +758,88 @@ textarea:focus {
   margin-right: 6px;
 }
 
-.inline-form input[type="submit"] {
-  padding: 6px 12px;
-  font-size: 14px;
+.inline-form button {
+  font-size: 1.25em;
   border: none;
-  border-radius: 6px;
-  color: #fff;
+  background: transparent;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+}
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 3;
+  backdrop-filter: blur(2px);
 }
 
-/* View button: Blue */
-.viewBtn {
-  background-color: #007BFF;
-}
-.viewBtn:hover {
-  background-color: #0056b3;
-}
-
-/* Update button: Green */
-.updateBtn {
-  background-color: #28a745;
-}
-.updateBtn:hover {
-  background-color: #1e7e34;
-}
-
-/* Delete button: Red */
-.deleteBtn {
-  background-color: #dc3545;
-}
-.deleteBtn:hover {
-  background-color: #c82333;
-}
 #deletePopup {
-      display: none;
-      position: fixed;
-      top: 30%;
-      left: 50%;
-      transform: translate(-50%, -30%);
-      background-color: white;
-      border: 1px solid #aaa;
-      padding: 50px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.25);
-      z-index: 5;
-      width: 40em;
-      height: 15em;
-    }
-    #overlay {
-      display: none;
-      position: fixed;
-      top: 0; 
-      left: 0;
-      width: 100%; 
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 3;
-    }
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 12px;
+  padding: 3em;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  z-index: 5;
+  width: 30em;
+  max-width: 90%;
+  text-align: center;
+}
+
+#deletePopup p {
+  font-size: 1em;
+  margin-bottom: 1.5em;
+  color: #000;
+}
+#popupDeleteForm {
+  width: 100%;
+}
+
+.popup-buttons {
+  clear: both;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+}
+
+#popupDeleteForm button {
+  padding: 0.6em 1.5em;
+  font-size: 1em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+#popupDeleteForm .confirm {
+  background-color: #e74c3c;
+  color: #fff;
+} 
+
+#popupDeleteForm .confirm:hover {
+  background: #c0392b;
+}
+
+#popupDeleteForm .cancel {
+  background: #ccc;
+  color: #333;
+}
+
+#popupDeleteForm .cancel:hover {
+  background-color: #bbb;
+}
+
     #delete {
       background: #ae0d01;
+      text-align: center;
     }
     #delete:hover {
-      background: #0056b3;
-    }
-    #deleteConfirm {
-      padding-bottom: 40px;
+      background: #a9aaab;
     }

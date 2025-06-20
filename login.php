@@ -23,7 +23,7 @@ if (!$admin) {
     exit();
 }
 
-// Step 3: Check stored password
+
 $hashedPassword = $admin['password'];
 
 if (password_needs_rehash($hashedPassword, PASSWORD_DEFAULT)) {
@@ -37,25 +37,22 @@ if (password_needs_rehash($hashedPassword, PASSWORD_DEFAULT)) {
         $updateStatement->execute();
         $updateStatement->closeCursor();
 
-        // ✅ Set session
+        
         $_SESSION['isLoggedIn'] = true;
         $_SESSION['fullName'] = $admin['username'];
-        $_SESSION['adminID'] = $admin['adminID']; // ✅ Add this line
+        $_SESSION['adminID'] = $admin['adminID']; 
 
         header('Location: admin_dashboard.php');
         exit();
 
-    } else {
-        echo "Password does NOT match plaintext. Login failed.";
-        exit();
-    }
+    } 
 
 } else {
     if (password_verify($password, $hashedPassword)) {
-        // ✅ Set session
+        
         $_SESSION['isLoggedIn'] = true;
         $_SESSION['fullName'] = $admin['username'];
-        $_SESSION['adminID'] = $admin['adminID']; // ✅ Add this line
+        $_SESSION['adminID'] = $admin['adminID'];
 
         header('Location: admin_dashboard.php');
         exit();
