@@ -24,6 +24,8 @@ $statement = $db->prepare($queryInstructors);
 $statement->execute();
 $instructors = $statement->fetchAll();
 $statement->closeCursor();
+// echo count($instructors);
+// die();
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +70,7 @@ $statement->closeCursor();
 <div id="overlay">
   <div id="deletePopup">
     <p>Are you sure you want to delete this instructor?</p>
-    <form id="popupDeleteForm" action="delete_instructor.php" method="post">
+    <form id="popupDeleteForm" action="manage_instructor/delete_instructor.php" method="post">
       <input type="hidden" name="instructorID" id="popupInstructorID" />
       <div class="popup-buttons">
         <button type="submit" id="delete" class="confirm">Yes, Delete</button>
@@ -76,7 +78,12 @@ $statement->closeCursor();
       </div>
     </form>
   </div>
-</div>
+</div> 
+<!-- <div id="overlay">
+  <div id="deletePopup">
+
+  </div> 
+ </div>-->
 
  
   <table>
@@ -100,13 +107,13 @@ $statement->closeCursor();
       <td><?php echo htmlspecialchars($instructor['contactNumber']); ?></td>
       <td><?php echo htmlspecialchars($instructor['mailingAddress']); ?></td>
       <td>    
-        <form action="view_details.php" method="post" class="inline-form">
+        <form action="manage_instructor/view_details.php" method="post" class="inline-form">
           <input type="hidden" name="instructorID" value="<?php echo $instructor['instructorID']; ?>"/>
           <button type="submit" title="View">
             <i class="fas fa-eye"></i>
-            </button>
+          </button>
         </form> <!-- View Details Button -->
-        <form action="update_instructor_form.php" method="post" class="inline-form">
+        <form action="manage_instructor/update_instructor_form.php" method="post" class="inline-form">
           <input type="hidden" name="instructorID" value="<?php echo $instructor['instructorID']; ?>" />
             <button type="submit" title="Edit">
             <i class="fas fa-edit"></i>
@@ -127,7 +134,7 @@ $statement->closeCursor();
     <p>No instructor records found.</p>
   <?php endif; ?>
 
-  <p><a href="add_instructor_form.php">Add New Instructor</a></p>
+  <p><a href="manage_instructor/add_instructor_form.php">Add New Instructor</a></p>
 </main>
 
 <footer class="footer">

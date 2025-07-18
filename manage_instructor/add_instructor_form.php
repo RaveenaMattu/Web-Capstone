@@ -6,7 +6,7 @@ if (!isset($_SESSION['isLoggedIn']) || !isset($_SESSION['adminID'])) {
     exit();
 }
 
-require('database.php');
+require('../database.php');
 
 $queryAdmin = 'SELECT * FROM admins WHERE adminID = :adminID';
 $statement = $db->prepare($queryAdmin);
@@ -24,16 +24,16 @@ $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Learning Pod - Add Instructor</title>
-  <script src="scripts/app.js" defer></script>
-  <link rel="stylesheet" href="css/app.css"/>
+  <script src="../scripts/app.js" defer></script>
+  <link rel="stylesheet" href="../css/app.css"/>
 </head>
 <body>
-  <?php include('admin_details.php'); ?>
+  <?php include('../admin_details.php'); ?>
   <header class="header">
     <div class="logo"></div>
     <nav class="nav">
-      <a href="admin_dashboard.php">Dashboard</a>
-      <a href="manage_instructor.php" class="active">Manage Instructors</a>
+      <a href="../admin_dashboard.php">Dashboard</a>
+      <a href="../manage_instructor.php" class="active">Manage Instructors</a>
       <a href="#">Manage Students</a>
       <a href="#">Manage Courses</a>
       <a href="#">Tasks</a>
@@ -41,18 +41,22 @@ $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.
     <div class="user-info">Hi, <?php echo $_SESSION['fullName']; ?>
       <div class="profile-wrapper">
           <div class="profile-circle">
-            <img src="<?php echo htmlspecialchars('./images/' . $imageFile); ?>" width="40" height="40" alt="Profile Picture" id="profilePicture">
+            <img src="<?php echo htmlspecialchars('../images/' . $imageFile); ?>" width="40" height="40" alt="Profile Picture" id="profilePicture">
           </div>
           <div class="logOutBox">
             <a href="#" onclick="openUpdateAdmin();">Update Profile</a>
-            <a href="admin_logout.php">Log Out</a>
+            <a href="../admin_logout.php">Log Out</a>
           </div>
       </div>      
     </div>  
   </header> 
   <main id="addInstructorMain">
     <h2>Add New Instructor</h2>
-    <form action="add_instructor.php" method="post" enctype="multipart/form-data" id="addInstructorForm">
+    <?php if (isset($_SESSION['error'])): ?>
+      <p style="color: #C21807;"><?php echo $_SESSION['error']; ?></p>
+      <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+    <form action="add_instructor.php" method="post" enctype="multipart/form-data" id="instructorForm">
       <div class="form-group">
         <label for="image">Upload Image:</label>
         <input type="file" name="image">
@@ -98,7 +102,7 @@ $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.
 
       <div class="form-row">
         <button type="submit" id="submit">Add Instructor</button>
-        <button type="button" class="cancel" onclick="window.location.href='admin_dashboard.php';">Back to dashboard</button>
+        <button type="button" class="cancel" onclick="window.location.href='../admin_dashboard.php';">Back to dashboard</button>
       </div>
     </form>
   </main>

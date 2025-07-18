@@ -2,7 +2,8 @@
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1'); 
 error_reporting(E_ALL);
-  require_once('database.php');
+  session_start();
+  require_once('../database.php');
 
   $firstName = filter_input(INPUT_POST, 'firstName');
   $lastName = filter_input(INPUT_POST, 'lastName');
@@ -12,7 +13,7 @@ error_reporting(E_ALL);
   $password = filter_input(INPUT_POST, 'password');
   $mailingAddress = filter_input(INPUT_POST, 'mailingAddress');
   $image = $_FILES['image'] ?? null;
-  $image_dir = 'images/';
+  $image_dir = '../images/';
   $image_dir_path = getcwd() . DIRECTORY_SEPARATOR . $image_dir;
   $imageName = 'placeholder.jpg'; // Default image
   $imagePath = $image_dir . $imageName;
@@ -32,6 +33,19 @@ error_reporting(E_ALL);
       echo "No image uploaded or there was an error.";
       exit();
   }
+  // Check for existing instructor with the same email
+  $query = 'SELECT * FROM instructors WHERE email = :emailAddress';
+  $statement = $db->prepare($query);
+  $statement->bindValue(':emailAddress', $emailAddress);
+  $statement->execute();
+  $existingInstructor = $statement->fetch();
+  $statement->closeCursor();    
+  if ($existingInstructor) {
+    session_start();
+    $_SESSION['error'] = 'An instructor with this email already exists.';
+    header('Location: add_instructor_form.php');
+    exit();
+}           
 
   if (!$firstName || !$lastName || !$doj || !$emailAddress || !$password) {
       echo "Missing required fields.";
@@ -52,7 +66,7 @@ error_reporting(E_ALL);
   $statement->execute();
   $statement->closeCursor();
   // Redirect to manage instructors page
-  header('Location: manage_instructor.php');
+  header('Location: ../manage_instructor.php');
   exit();
   
 ?>

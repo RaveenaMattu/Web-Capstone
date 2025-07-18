@@ -59,5 +59,5 @@ function closeUpdateAdmin() {
   function closePopup() {
     deletePopup.style.display = 'none';
     overlay.style.display = 'none';
-    popupStudentID.value = '';
+    popupInstructorID.value = '';
   }
