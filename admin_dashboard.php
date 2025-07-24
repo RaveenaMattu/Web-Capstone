@@ -21,6 +21,12 @@ $statement->execute();
 $instructors = $statement->fetchAll();
 $statement->closeCursor();
 
+$queryStudents = 'SELECT * FROM students';
+$statement = $db->prepare($queryStudents);
+$statement->execute();
+$students = $statement->fetchAll();
+$statement->closeCursor();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +44,7 @@ $statement->closeCursor();
     <nav class="nav">
       <a href="#" class="active">Dashboard</a>
       <a href="manage_instructor.php">Manage Instructors</a>
-      <a href="#">Manage Students</a>
+      <a href="manage_student.php">Manage Students</a>
       <a href="#">Manage Courses</a>
       <a href="#">Tasks</a>
     </nav>
@@ -58,7 +64,15 @@ $statement->closeCursor();
   <main class="main-content">
     <section class="stats">
       <div class="stat-box"><p>Total Courses</p><h2>4</h2></div>
-      <div class="stat-box"><p>Total Students</p><h2>12</h2></div>
+      <div class="stat-box"><p>Total Students</p><h2>
+         <?php
+            if (count($students) > 0) {
+              echo count($students);
+            } else {
+              echo "-";
+            }
+          ?>
+      </h2></div>
       <div class="stat-box"><p>Total Instructors</p>
         <h2>
           <?php

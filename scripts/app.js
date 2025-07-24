@@ -37,27 +37,44 @@ function closeUpdateAdmin() {
 /**************************************/
 /*        OPEN DELETE POPUP           */
 /**************************************/
+const overlay = document.getElementById('overlay');
+const deletePopup = document.getElementById('deletePopup');
+const popupDeleteForm = document.getElementById('popupDeleteForm');
+const popupRecordID = document.getElementById('popupRecordID');
 
-  const overlay = document.querySelector('#overlay');
-  const deletePopup = document.querySelector('#deletePopup');
-  const popupInstructorID = document.querySelector('#popupInstructorID');
-  const deleteForm = document.querySelectorAll('.deleteForm');
-
-  function showDeletePopup(event) {
+document.querySelectorAll('.deleteForm').forEach(form => {
+  form.addEventListener('submit', function(event) {
     event.preventDefault();
-    const form = event.currentTarget;
-    const instructorID = form.querySelector('input[name="instructorID"]').value;
-    popupInstructorID.value = instructorID;
+
+    // Get inputs 
+    const studentInput = form.querySelector('input[name="studentID"]');
+    const instructorInput = form.querySelector('input[name="instructorID"]');
+
+    // Set the hidden input name and value in popup form 
+    if (studentInput && studentInput.value) {
+      popupRecordID.name = 'studentID';
+      popupRecordID.value = studentInput.value;
+      popupDeleteForm.action = 'manage_student/delete_student.php';  
+    } else if (instructorInput && instructorInput.value) {
+      popupRecordID.name = 'instructorID';
+      popupRecordID.value = instructorInput.value;
+      popupDeleteForm.action = 'manage_instructor/delete_instructor.php'; 
+    } else {
+      alert('No valid record selected for deletion.');
+      return;
+    }
+
+    // Show popup
     overlay.style.display = 'block';
     deletePopup.style.display = 'block';
-  }
-
-  document.querySelectorAll('.deleteForm').forEach(form => {
-    form.addEventListener('submit', showDeletePopup);
   });
+});
 
-  function closePopup() {
-    deletePopup.style.display = 'none';
-    overlay.style.display = 'none';
-    popupInstructorID.value = '';
-  }
+function closePopup() {
+  overlay.style.display = 'none';
+  deletePopup.style.display = 'none';
+  popupRecordID.name = '';
+  popupRecordID.value = '';
+  popupDeleteForm.action = '';
+} // closePopup function
+

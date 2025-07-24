@@ -23,7 +23,7 @@ $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Learning Pod - Add Instructor</title>
+  <title>Learning Pod - Add Student</title>
   <script src="../scripts/app.js" defer></script>
   <link rel="stylesheet" href="../css/app.css"/>
 </head>
@@ -33,8 +33,8 @@ $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.
     <div class="logo"></div>
     <nav class="nav">
       <a href="../admin_dashboard.php">Dashboard</a>
-      <a href="../manage_instructor.php" class="active">Manage Instructors</a>
-      <a href="../manage_student.php">Manage Students</a>
+      <a href="../manage_instructor.php">Manage Instructors</a>
+      <a href="../manage_student.php" class="active">Manage Students</a>
       <a href="#">Manage Courses</a>
       <a href="#">Tasks</a>
     </nav>
@@ -51,12 +51,12 @@ $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.
     </div>  
   </header> 
   <main id="addInstructorMain">
-    <h2>Add New Instructor</h2>
+    <h2>Add New Student</h2>
     <?php if (isset($_SESSION['error'])): ?>
       <p style="color: #C21807;"><?php echo $_SESSION['error']; ?></p>
       <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
-    <form action="add_instructor.php" method="post" enctype="multipart/form-data" id="addUpdateForm">
+    <form action="add_student.php" method="post" enctype="multipart/form-data" id="addUpdateForm">
       <div class="form-group">
         <label for="image">Upload Image:</label>
         <input type="file" name="image">
@@ -75,19 +75,19 @@ $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.
 
       <div class="form-row">
         <div class="form-group">
-          <label for="doj">Date of Joining:</label>
-          <input type="date" id="doj" name="doj" placeholder="Date of Joining" required>
+          <label for="dob">Date of Birth:</label>
+          <input type="date" id="dob" name="dob" required>
         </div>
         <div class="form-group">
-          <label for="phoneNumber">Phone Number:</label>
-          <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Phone Number">
+          <label for="contactNumber">Contact Number:</label>
+          <input type="tel" id="contactNumber" name="contactNumber" maxlength="10" placeholder="Contact Number" required>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label for="emailAddress">Email Address:</label>
-          <input type="email" id="emailAddress" name="emailAddress" placeholder="Email Address" required>
+          <label for="email">Email Address:</label>
+          <input type="email" id="email" name="email" placeholder="Email Address" required>
         </div>
         <div class="form-group">
           <label for="password">Password:</label>
@@ -96,13 +96,23 @@ $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.
       </div>
 
       <div class="form-group">
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+          <option value="">-- Select Status --</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+          <option value="Graduated">Graduated</option>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label for="mailingAddress">Mailing Address:</label>
-        <textarea id="mailingAddress" name="mailingAddress" rows="2" cols="20" placeholder="Mailing Address"></textarea>
+        <textarea id="mailingAddress" name="mailingAddress" rows="2" cols="20" placeholder="Mailing Address" required></textarea>
       </div>
 
       <div class="form-row">
-        <button type="submit" id="submit">Add Instructor</button>
-        <button type="button" class="cancel" onclick="window.location.href='../manage_instructor.php';">Back to Instructor List</button>
+        <button type="submit" id="submit">Add Student</button>
+        <button type="button" class="cancel" onclick="window.location.href='../manage_student.php';">Back to Student List</button>
       </div>
     </form>
   </main>

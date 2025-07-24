@@ -686,7 +686,7 @@ button i:hover {
   color: #2563eb;
   margin-bottom: 20px;
 }
-#instructorForm {
+#addUpdateForm {
   background-color: #fff;
   padding: 40px 30px;
   padding-left: 50px;
@@ -731,7 +731,7 @@ input[type="email"],
 input[type="password"],
 input[type="tel"],
 input[type="date"],
-textarea,
+textarea,select,
 input[type="file"] {
   padding: 10px 14px;
   border-radius: 8px;
@@ -885,4 +885,31 @@ textarea:focus {
 
 #container p strong {
   color: #000;
+}
+.status-active {
+  background: #b7efb7;
+  padding: 3px 10px;
+  border-radius: 15px;
+  font-size: 0.7em;
+}
+
+.status-inactive {
+  background: #f7b8b8;
+  padding: 3px 10px;
+  border-radius: 15px;
+  font-size: 0.7em;
+}
+
+.status-graduated {
+  background: #9fb7f9;
+  padding: 3px 10px;
+  border-radius: 15px;
+  font-size: 0.7em;
+}
+
+.status-unknown {
+  background: #808080;
+  padding: 3px 10px;
+  border-radius: 15px;
+  font-size: 0.7em;
 }

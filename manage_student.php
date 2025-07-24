@@ -19,12 +19,12 @@ $statement->closeCursor();
 
 $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.jpg';
 
-$queryInstructors = 'SELECT * FROM instructors';
-$statement = $db->prepare($queryInstructors);
+$queryStudents = 'SELECT * FROM students';
+$statement = $db->prepare($queryStudents);
 $statement->execute();
-$instructors = $statement->fetchAll();
+$students = $statement->fetchAll();
 $statement->closeCursor();
-// echo count($instructors);
+// echo count($students);
 // die();
 ?>
 
@@ -45,8 +45,8 @@ $statement->closeCursor();
   <div class="logo"></div>
   <nav class="nav">
     <a href="admin_dashboard.php">Dashboard</a>
-    <a href="manage_instructor.php" class="active">Manage Instructors</a>
-    <a href="manage_student.php">Manage Students</a>
+    <a href="manage_instructor.php">Manage Instructors</a>
+    <a href="manage_student.php" class="active">Manage Students</a>
     <a href="#">Manage Courses</a>
     <a href="#">Tasks</a>
   </nav>
@@ -65,13 +65,13 @@ $statement->closeCursor();
 
 <main id="manageInstructorMain">
 
-  <?php if (count($instructors) > 0): ?>
+  <?php if (count($students) > 0): ?>
 
 <div id="overlay">
   <div id="deletePopup">
-    <p>Are you sure you want to delete this instructor?</p>
-    <form id="popupDeleteForm" action="manage_instructor/delete_instructor.php" method="post">
-      <input type="hidden" name="instructorID" id="popupRecordID" />
+    <p>Are you sure you want to delete this student?</p>
+    <form id="popupDeleteForm" action="manage_student/delete_student.php" method="post">
+      <input type="hidden" name="studentID" id="popupRecordID" />
       <div class="popup-buttons">
         <button type="submit" id="delete" class="confirm">Yes, Delete</button>
         <button type="button" onclick="closePopup()" id="cancel" class="cancel">No, Cancel</button>
@@ -91,36 +91,57 @@ $statement->closeCursor();
       <th>Photo</th>
       <th>First Name</th>
       <th>Last Name</th>
-      <th>Date of Joining</th>
+      <th>Status</th>
+      <th>Date of Birth</th>
       <th>Email Address</th>
       <th>Phone Number</th>
       <th>Mailing Address</th>
       <th>Actions</th>
     </tr>
-    <?php foreach ($instructors as $instructor): ?>
+    <?php foreach ($students as $student): ?>
     <tr>
-      <td><img src="<?php echo htmlspecialchars('./images/' . $instructor['imageName']); ?>" alt="Instructor Image" width="50" height="50"></td>
-      <td><?php echo htmlspecialchars($instructor['firstName']); ?></td>
-      <td><?php echo htmlspecialchars($instructor['lastName']); ?></td>
-      <td><?php echo htmlspecialchars($instructor['doj']); ?></td>
-      <td><?php echo htmlspecialchars($instructor['email']); ?></td>
-      <td><?php echo htmlspecialchars($instructor['contactNumber']); ?></td>
-      <td><?php echo htmlspecialchars($instructor['mailingAddress']); ?></td>
+      <td><img src="<?php echo htmlspecialchars('./images/' . $student['imageName']); ?>" alt="Student Image" width="50" height="50"></td>
+      <td><?php echo htmlspecialchars($student['firstName']); ?></td>
+      <td><?php echo htmlspecialchars($student['lastName']); ?></td>
+      <td>
+        <?php
+          $status = $student['status'] ?? 'Unknown';
+          $statusClass = '';
+          switch ($status) {
+            case 'Active':
+              $statusClass = 'status-active';
+              break;
+            case 'Inactive':
+              $statusClass = 'status-inactive';
+              break;
+            case 'Graduated':
+              $statusClass = 'status-graduated';
+              break;
+            default:
+              $statusClass = 'status-unknown';
+          }
+        ?>
+        <p><span class="<?php echo $statusClass; ?>"><?php echo $status; ?></span></p>
+      </td>
+      <td><?php echo htmlspecialchars($student['dob']); ?></td>
+      <td><?php echo htmlspecialchars($student['email']); ?></td>
+      <td><?php echo htmlspecialchars($student['contactNumber']); ?></td>
+      <td><?php echo htmlspecialchars($student['mailingAddress']); ?></td>
       <td>    
-        <form action="manage_instructor/view_details.php" method="post" class="inline-form">
-          <input type="hidden" name="instructorID" value="<?php echo $instructor['instructorID']; ?>"/>
+        <form action="manage_student/view_details.php" method="post" class="inline-form">
+          <input type="hidden" name="studentID" value="<?php echo $student['studentID']; ?>"/>
           <button type="submit" title="View">
             <i class="fas fa-eye"></i>
           </button>
         </form> <!-- View Details Button -->
-        <form action="manage_instructor/update_instructor_form.php" method="post" class="inline-form">
-          <input type="hidden" name="instructorID" value="<?php echo $instructor['instructorID']; ?>" />
+        <form action="manage_student/update_student_form.php" method="post" class="inline-form">
+          <input type="hidden" name="studentID" value="<?php echo $student['studentID']; ?>" />
             <button type="submit" title="Edit">
             <i class="fas fa-edit"></i>
           </button>
         </form> <!-- Edit Button -->
         <form class="inline-form deleteForm" method="post" >
-          <input type="hidden" name="instructorID" value="<?php echo $instructor['instructorID']; ?>" />
+          <input type="hidden" name="studentID" value="<?php echo $student['studentID']; ?>" />
           <button type="submit" title="Delete">
             <i class="fas fa-trash-alt"></i>
             </button>
@@ -131,10 +152,10 @@ $statement->closeCursor();
     <?php endforeach; ?>
   </table>
   <?php else: ?>
-    <p>No instructor records found.</p>
+    <p>No student records found.</p>
   <?php endif; ?>
 
-  <p><a href="manage_instructor/add_instructor_form.php">Add New Instructor</a></p>
+  <p><a href="manage_student/add_student_form.php">Add New Student</a></p>
 </main>
 
 <footer class="footer">

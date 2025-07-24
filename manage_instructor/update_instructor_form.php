@@ -36,7 +36,7 @@ $imageFile = (!empty($instructor['imageName'])) ? $instructor['imageName'] : 'pl
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Update Instructor</title>
+  <title>Learning Pod - Update Instructor</title>
   <link rel="stylesheet" href="../css/app.css" />
 </head>
 <body>
@@ -47,7 +47,7 @@ $imageFile = (!empty($instructor['imageName'])) ? $instructor['imageName'] : 'pl
   <nav class="nav">
     <a href="../admin_dashboard.php">Dashboard</a>
     <a href="../manage_instructor.php" class="active">Manage Instructors</a>
-    <a href="#">Manage Students</a>
+    <a href="../manage_student.php">Manage Students</a>
     <a href="#">Manage Courses</a>
     <a href="#">Tasks</a>
   </nav>
@@ -71,7 +71,7 @@ $imageFile = (!empty($instructor['imageName'])) ? $instructor['imageName'] : 'pl
     <?php unset($_SESSION['error']); ?>
   <?php endif; ?>
 
-  <form action="update_instructor.php" method="post" enctype="multipart/form-data" id="instructorForm">
+  <form action="update_instructor.php" method="post" enctype="multipart/form-data" id="addUpdateForm">
     <input type="hidden" name="instructorID" value="<?php echo $instructorID; ?>" />
 
     <div class="form-group">
