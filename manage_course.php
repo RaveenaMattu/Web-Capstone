@@ -69,7 +69,7 @@ $statement->closeCursor();
       </div>
       <div class="logOutBox">
         <a href="#" onclick="openUpdateAdmin();">Update Profile</a>
-        <a href="admin_logout.php">Log Out</a>
+        <a href="admin_logout.php" style="color:#C21807;">Log Out</a>
       </div>
     </div>
   </div>

@@ -60,9 +60,9 @@
     <nav class="nav">
       <a href="../admin_dashboard.php">Dashboard</a>
       <a href="../manage_instructor.php" class="active">Manage Instructors</a>
-      <a href="#">Manage Students</a>
-      <a href="#">Manage Courses</a>
-      <a href="#">Tasks</a>
+      <a href="../manage_student.php">Manage Students</a>
+      <a href="../manage_course.php">Manage Courses</a>
+      <a href="../manage_task.php">Tasks</a>
     </nav>
     <div class="user-info">Hi, <?php echo $_SESSION['fullName']; ?>
       <div class="profile-wrapper">
@@ -71,7 +71,7 @@
           </div>
           <div class="logOutBox">
             <a href="#" onclick="openUpdateAdmin();">Update Profile</a>
-            <a href="../admin_logout.php">Log Out</a>
+            <a href="admin_logout.php" style="color:#C21807;">Log Out</a>
           </div>
       </div>      
     </div>  

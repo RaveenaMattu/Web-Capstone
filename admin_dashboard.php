@@ -72,7 +72,7 @@ $statement->closeCursor();
         </div>
         <div class="logOutBox">
         <a href="#" onclick="openUpdateAdmin();">Update Profile</a>
-        <a href="admin_logout.php">Log Out</a>
+        <a href="admin_logout.php" style="color:#C21807;">Log Out</a>
       </div>
       </div>      
     </div>  
@@ -117,7 +117,7 @@ $statement->closeCursor();
     </section>
 
     <section class="tasks-box">
-      <h4>Pending Tasks <a href="#">View All >></a></h4>
+      <h4>Pending Tasks <a href="manage_tasks.php">View All >></a></h4>
       <ul class="task-list">
         <?php
         if ($tasks) {

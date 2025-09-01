@@ -1,9 +1,15 @@
 <?php
-
 session_start();
+if (isset($_SESSION['error'])): ?>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      if (typeof openAdminLogin === "function") {
+        openAdminLogin();
+      }
+    });
+  </script>
+<?php endif; ?>
 
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +24,10 @@ session_start();
       <div class="loginForm">
         <h4>Admin Login</h4>
         <form action="login.php" method="POST" class="login-form">
+            <?php if (isset($_SESSION['error'])): ?>
+            <p style="color: #C21807;"><?php echo $_SESSION['error']; ?></p>
+            <?php unset($_SESSION['error']); ?>
+          <?php endif; ?>
           <input type="hidden" name="role" value="admin">
           <input type="email" name="email" placeholder="Enter your email">
           <input type="password" name="password" placeholder="Enter your password">
