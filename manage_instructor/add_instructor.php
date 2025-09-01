@@ -29,9 +29,6 @@ error_reporting(E_ALL);
           echo "Failed to upload image to $target";
           exit();
       }
-  } else {
-      echo "No image uploaded or there was an error.";
-      exit();
   }
   // Check for existing instructor with the same email
   $query = 'SELECT * FROM instructors WHERE email = :emailAddress';

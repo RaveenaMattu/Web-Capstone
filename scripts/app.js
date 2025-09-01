@@ -1,3 +1,4 @@
+console.log("JS loaded");
 /**************************************/
 /*           SHOW ADMIN LOGIN         */
 /**************************************/
@@ -37,6 +38,7 @@ function closeUpdateAdmin() {
 /**************************************/
 /*        OPEN DELETE POPUP           */
 /**************************************/
+
 const overlay = document.getElementById('overlay');
 const deletePopup = document.getElementById('deletePopup');
 const popupDeleteForm = document.getElementById('popupDeleteForm');
@@ -46,11 +48,16 @@ document.querySelectorAll('.deleteForm').forEach(form => {
   form.addEventListener('submit', function(event) {
     event.preventDefault();
 
-    // Get inputs 
     const studentInput = form.querySelector('input[name="studentID"]');
     const instructorInput = form.querySelector('input[name="instructorID"]');
+    const courseInput = form.querySelector('input[name="courseID"]');
+    const taskInput = form.querySelector('input[name="taskID"]');
 
-    // Set the hidden input name and value in popup form 
+    console.log('Clicked delete form', form);
+    console.log('Student:', studentInput?.value);
+    console.log('Instructor:', instructorInput?.value);
+    console.log('Course:', courseInput?.value);
+
     if (studentInput && studentInput.value) {
       popupRecordID.name = 'studentID';
       popupRecordID.value = studentInput.value;
@@ -59,16 +66,24 @@ document.querySelectorAll('.deleteForm').forEach(form => {
       popupRecordID.name = 'instructorID';
       popupRecordID.value = instructorInput.value;
       popupDeleteForm.action = 'manage_instructor/delete_instructor.php'; 
-    } else {
-      alert('No valid record selected for deletion.');
-      return;
+    } else if (courseInput && courseInput.value) {
+      popupRecordID.name = 'courseID';
+      popupRecordID.value = courseInput.value;
+      popupDeleteForm.action = 'manage_course/delete_course.php';       
+    } else if (taskInput && taskInput.value) {
+      popupRecordID.name = 'taskID';
+      popupRecordID.value = taskInput.value;
+      popupDeleteForm.action = 'manage_task/delete_task.php';       
     }
-
-    // Show popup
-    overlay.style.display = 'block';
-    deletePopup.style.display = 'block';
+    else {
+      alert('No valid record selected for deletion.');
+    }
+    // Show delete popup
+      overlay.style.display = 'block';
+      deletePopup.style.display = 'block';
   });
 });
+
 
 function closePopup() {
   overlay.style.display = 'none';

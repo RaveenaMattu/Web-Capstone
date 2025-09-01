@@ -14,7 +14,8 @@ require('database.php');
   <link rel="stylesheet" href="css/app.css" />
 </head>
 <body>
-  <div class="logo"></div>
+  <div class="logo"><img src="images/logo.png" alt="Logo" height="100" width="100"></div>
+
   <main>
     <div class="loginBox">
       <div class="loginForm">
@@ -23,9 +24,10 @@ require('database.php');
           <span class="role active">Instructor</span>
           <span class="role">Student</span>
         </div>
-        <form action="login.php" method="POST" class="login-form">
+        <form action="instructor-student-login.php" method="POST" class="login-form">
+          <input type="hidden" name="role" id="roleInput" value="Instructor">          
           <input type="email" name="email" placeholder="Enter your email" required>
-          <input type="password" name="password" placeholder="Enter your password">
+          <input type="password" name="password" placeholder="Enter your password" required>
           <button type="submit">Login</button>
         </form>
       </div>
@@ -35,13 +37,14 @@ require('database.php');
   <footer>
     © 2025 SMART Learning Pod by Raveena Mattu. All Rights Reserved.
   </footer>
-    <script>
+  <script>
     document.querySelectorAll('.role').forEach(role => {
       role.addEventListener('click', function () {
         document.querySelectorAll('.role').forEach(r => r.classList.remove('active'));
         this.classList.add('active');
+        document.getElementById('roleInput').value = this.innerText; // set hidden input
       });
     });
-  </script>
+</script>
 </body>
 </html>

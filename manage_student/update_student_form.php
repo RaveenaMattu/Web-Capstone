@@ -54,12 +54,13 @@
 <body>
 <?php include('../admin_details.php'); ?>
 <header class="header">
-  <div class="logo"></div>
+  <div class="logo"><img src="../images/logo.png" alt="Logo" height="100" width="100"></div>
+
   <nav class="nav">
     <a href="../admin_dashboard.php">Dashboard</a>
     <a href="../manage_instructor.php">Manage Instructors</a>
     <a href="../manage_student.php" class="active">Manage Students</a>
-    <a href="#">Manage Courses</a>
+    <a href="../manage_course.php">Manage Courses</a>
     <a href="#">Tasks</a>
   </nav>
   <div class="user-info">Hi, <?php echo htmlspecialchars($_SESSION['fullName']); ?>
@@ -121,7 +122,7 @@
         <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($student['email']); ?>" required>
       </div>
       <div class="form-group">
-        <label for="password">Password (Leave blank to keep current):</label>
+        <label for="password">New Password (optional):</label>
         <input type="password" id="password" name="password" placeholder="New Password">
       </div>
     </div>

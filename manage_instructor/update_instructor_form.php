@@ -43,7 +43,8 @@ $imageFile = (!empty($instructor['imageName'])) ? $instructor['imageName'] : 'pl
 <?php include('../admin_details.php'); ?>
 
 <header class="header">
-  <div class="logo"></div>
+  <div class="logo"><img src="../images/logo.png" alt="Logo" height="100" width="100"></div>
+
   <nav class="nav">
     <a href="../admin_dashboard.php">Dashboard</a>
     <a href="../manage_instructor.php" class="active">Manage Instructors</a>
@@ -109,7 +110,7 @@ $imageFile = (!empty($instructor['imageName'])) ? $instructor['imageName'] : 'pl
         <input type="email" name="emailAddress" value="<?php echo htmlspecialchars($instructor['email']); ?>" required>
       </div>
       <div class="form-group">
-        <label for="password">New Password (leave blank to keep current):</label>
+        <label for="password">New Password (optional):</label>
         <input type="password" name="password" placeholder="New Password">
       </div>
     </div>

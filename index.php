@@ -28,7 +28,7 @@ session_start();
     </div>
   </div>
   <header class="indexHeader">
-    <div class="logo"></div>
+    <div class="logo"><img src="images/logo.png" alt="Logo" height="100" width="100"></div>
     <div id="indexHeaderRight"><a href="#" onclick="openAdminLogin();">Login as Admin</a><a href="login_form.php" class="button">Login</a></div>
   </header>
   <main id="index">

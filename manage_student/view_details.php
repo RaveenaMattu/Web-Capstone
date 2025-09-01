@@ -58,7 +58,7 @@ $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.
 <body>
 <?php include('../admin_details.php'); ?>
 <header class="header">
-  <div class="logo"></div>
+  <div class="logo"><img src="../images/logo.png" alt="Logo" height="100" width="100"></div>
   <nav class="nav">
     <a href="../admin_dashboard.php">Dashboard</a>
     <a href="../manage_instructor.php">Manage Instructors</a>
