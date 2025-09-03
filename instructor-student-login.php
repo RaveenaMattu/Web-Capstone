@@ -69,7 +69,7 @@ if (password_verify($password, $hashedPassword)) {
     if ($role === "Instructor") {
         header('Location: instructor/instructor_dashboard.php');
     } else {
-        header('Location: student/student_dashboard.php');
+        header('Location: student_dashboard.php');
     }
     exit();
 } else {

@@ -118,7 +118,7 @@
                           <form action="manage_task/toggle_task.php" method="post" style="display:inline;">
                             <input type="hidden" name="taskID" value="<?php echo $task['taskID']; ?>">
                             <input type="hidden" name="isComplete" value="<?php echo $task['isComplete']; ?>">
-                            <button type="submit" style="padding:5px 10px; cursor:pointer; margin:0 10px;background-color: <?php echo ($task['isComplete'] == 0 ? '#eca726ff' : '#389a4dff'); ?>;">
+                            <button type="submit" style="width: 125px; padding:5px 10px; cursor:pointer; margin:0 10px;background-color: <?php echo ($task['isComplete'] == 0 ? '#eca726ff' : '#389a4dff'); ?>;">
                               <?php echo $task['isComplete'] == 1 ? 'Completed' : 'Pending'; ?>
                             </button>
                           </form>
@@ -126,7 +126,7 @@
                           <!-- Delete Task Form -->
                           <form class="inline-form deleteForm" method="post">
                             <input type="hidden" name="taskID" value="<?php echo $task['taskID']; ?>">
-                            <button type="submit" style="font-size: 14px;padding:5px 10px; cursor:pointer; background:#C21807; color:#fff; border:none; margin:0 10px;">
+                            <button type="submit" style="font-size: 15px;padding:5px 10px; cursor:pointer; background:#bbb; color:#fff; border:none; margin:0 10px;">
                               Remove
                             </button>
                           </form>

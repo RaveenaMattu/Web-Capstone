@@ -29,12 +29,20 @@ $statement->closeCursor();
 $queryCourses = "SELECT c.courseID, c.courseName, c.imageName, i.firstName AS instructorFirstName, i.lastName AS instructorLastName 
                 FROM courses c
                 LEFT JOIN instructors i ON c.instructorID = i.instructorID
-                ORDER BY c.courseID DESC
-                LIMIT 4";
-      $statement = $db->prepare($queryCourses);
-      $statement->execute();
-      $courses = $statement->fetchAll();
-      $statement->closeCursor();
+                ORDER BY c.courseID DESC";
+$statement = $db->prepare($queryCourses);
+$statement->execute();
+$courses = $statement->fetchAll();
+$statement->closeCursor();
+
+$queryCoursesCount = "SELECT c.courseID, c.courseName, c.imageName, i.firstName AS instructorFirstName, i.lastName AS instructorLastName 
+                FROM courses c
+                LEFT JOIN instructors i ON c.instructorID = i.instructorID
+                ORDER BY c.courseID DESC LIMIT 4";
+$statement = $db->prepare($queryCoursesCount);
+$statement->execute();
+$courseCounts = $statement->fetchAll();
+$statement->closeCursor();
 
 $queryTasks = 'SELECT * FROM admin_tasks WHERE isComplete = 0 ORDER BY created_at DESC LIMIT 3';
 $statement = $db->prepare($queryTasks);
@@ -130,22 +138,22 @@ $statement->closeCursor();
     </section>
 
   <section class="active-courses">
-  <h4>Active Courses <a href="manage_course.php">View All >></a></h4>
+  <h4>Recently Added Courses <a href="manage_course.php">View All >></a></h4>
   <div class="courses-grid">
     <?php
-      if ($courses) {
-        foreach ($courses as $course) {
-            $imagePath = !empty($course['imageName']) 
-                        ? 'images/' . htmlspecialchars($course['imageName']) 
+      if ($courseCounts) {
+        foreach ($courseCounts as $courseCount) {
+            $imagePath = !empty($courseCount['imageName']) 
+                        ? 'images/' . htmlspecialchars($courseCount['imageName']) 
                         : 'images/default-course.png'; // fallback
             echo '
             <div class="course-card">
               <img src="'.$imagePath.'" 
-                   alt="'.htmlspecialchars($course['courseName']).'" 
+                   alt="'.htmlspecialchars($courseCount['courseName']).'" 
                    class="course-thumb">
               <div class="course-info">
-                <h5>'.htmlspecialchars($course['courseName']).'</h5>
-                <p class="instructor">Instructor: '.htmlspecialchars($course['instructorFirstName'].' '.$course['instructorLastName'] ?? "Unknown").'</p>
+                <h5>'.htmlspecialchars($courseCount['courseName']).'</h5>
+                <p class="instructor">Instructor: '.htmlspecialchars($courseCount['instructorFirstName'].' '.$courseCount['instructorLastName'] ?? "Unknown").'</p>
               </div>
             </div>';
         }
