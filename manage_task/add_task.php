@@ -17,11 +17,10 @@ if (!isset($_SESSION['adminID'])) {
 $adminID = $_SESSION['adminID'];
 
 // Insert into database
-$query = 'INSERT INTO admin_tasks (taskDescription, adminID) 
-          VALUES (:taskDescription, :adminID)';
+$query = 'INSERT INTO admin_tasks (taskDescription) 
+          VALUES (:taskDescription)';
 $statement = $db->prepare($query);
 $statement->bindValue(':taskDescription', $taskDescription);
-$statement->bindValue(':adminID', $adminID, PDO::PARAM_INT);
 $statement->execute();
 $statement->closeCursor();
 

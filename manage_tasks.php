@@ -21,9 +21,8 @@
   $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.jpg';
 
   // Fetch tasks for this admin
-  $queryTasks = 'SELECT * FROM admin_tasks WHERE adminID = :adminID ORDER BY created_at DESC';
+  $queryTasks = 'SELECT * FROM admin_tasks ORDER BY created_at DESC';
   $statement = $db->prepare($queryTasks);
-  $statement->bindValue(':adminID', $adminID);
   $statement->execute();
   $tasks = $statement->fetchAll();
   $statement->closeCursor();
