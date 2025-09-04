@@ -1,7 +1,5 @@
 <?php
-  ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+
  require_once('database.php');
  $username = $_SESSION['fullName'];
  
@@ -62,30 +60,8 @@ $statement->closeCursor();
   <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
-<?php include('admin_details.php'); ?>
-  <header class="header">
-    <div class="logo"><img src="images/logo.png" alt="Logo" height="100" width="100"></div>
-
-    <nav class="nav">
-      <a href="admin_dashboard.php" class="active">Dashboard</a>
-      <a href="manage_instructor.php">Manage Instructors</a>
-      <a href="manage_student.php">Manage Students</a>
-      <a href="manage_course.php">Manage Courses</a>
-      <a href="manage_tasks.php">Tasks</a>
-    </nav>
-    <div class="user-info">Hi, <?php echo $_SESSION['fullName']; ?>
-      <div class="profile-wrapper">
-          <div class="profile-circle">
-          <img src="<?php echo htmlspecialchars('./images/' . $imageFile); ?>" width="40" height="40" style="border: 50%;" alt="Profile Picture" id="profilePicture">
-        </div>
-        <div class="logOutBox">
-        <a href="#" onclick="openUpdateAdmin();">Update Profile</a>
-        <a href="admin_logout.php" style="color:#C21807;">Log Out</a>
-      </div>
-      </div>      
-    </div>  
-  </header>
-
+  <?php include('admin_details.php'); ?>
+  <?php include('header.php'); ?>
   <main class="main-content">
     <section class="stats">
       <div class="stat-box"><p>Total Courses</p><h2>
@@ -96,16 +72,18 @@ $statement->closeCursor();
             echo "-";
           }
         ?>
-      </h2></div>
+        </h2>
+      </div>
       <div class="stat-box"><p>Total Students</p><h2>
-         <?php
+        <?php
             if (count($students) > 0) {
               echo count($students);
             } else {
               echo "-";
             }
           ?>
-      </h2></div>
+        </h2>
+      </div>
       <div class="stat-box"><p>Total Instructors</p>
         <h2>
           <?php
@@ -120,8 +98,9 @@ $statement->closeCursor();
       <div class="stat-box"><p>Pending Tasks</p><h2>
         <?php          
           echo count($tasks) > 0 ? count($tasks) : "-";
-          ?>
-      </h2></div>
+        ?>
+        </h2>
+      </div>
     </section>
 
     <section class="tasks-box">
@@ -137,36 +116,33 @@ $statement->closeCursor();
       </ul>
     </section>
 
-  <section class="active-courses">
-  <h4>Recently Added Courses <a href="manage_course.php">View All >></a></h4>
-  <div class="courses-grid">
-    <?php
-      if ($courseCounts) {
-        foreach ($courseCounts as $courseCount) {
-            $imagePath = !empty($courseCount['imageName']) 
-                        ? 'images/' . htmlspecialchars($courseCount['imageName']) 
-                        : 'images/default-course.png'; // fallback
-            echo '
-            <div class="course-card">
-              <img src="'.$imagePath.'" 
-                   alt="'.htmlspecialchars($courseCount['courseName']).'" 
-                   class="course-thumb">
-              <div class="course-info">
-                <h5>'.htmlspecialchars($courseCount['courseName']).'</h5>
-                <p class="instructor">Instructor: '.htmlspecialchars($courseCount['instructorFirstName'].' '.$courseCount['instructorLastName'] ?? "Unknown").'</p>
-              </div>
-            </div>';
-        }
-      } else {
-          echo "<p>No active courses found.</p>";
-      }
-    ?>
-  </div>
-</section>
-
-
+    <section class="active-courses">
+      <h4>Recently Added Courses <a href="manage_course.php">View All >></a></h4>
+      <div class="courses-grid">
+        <?php
+          if ($courseCounts) {
+            foreach ($courseCounts as $courseCount) {
+                $imagePath = !empty($courseCount['imageName']) 
+                            ? 'images/' . htmlspecialchars($courseCount['imageName']) 
+                            : 'images/default-course.png'; // fallback
+                echo '
+                <div class="course-card">
+                  <img src="'.$imagePath.'" 
+                      alt="'.htmlspecialchars($courseCount['courseName']).'" 
+                      class="course-thumb">
+                  <div class="course-info">
+                    <h5>'.htmlspecialchars($courseCount['courseName']).'</h5>
+                    <p class="instructor">Instructor: '.htmlspecialchars($courseCount['instructorFirstName'].' '.$courseCount['instructorLastName'] ?? "Unknown").'</p>
+                  </div>
+                </div>';
+            }
+          } else {
+            echo "<p>No active courses found.</p>";
+          }
+        ?>
+      </div>
+    </section>
   </main>
-
   <footer class="footer">
     © 2025 SMART Learning Pod by Raveena Mattu. All Rights Reserved.
   </footer>

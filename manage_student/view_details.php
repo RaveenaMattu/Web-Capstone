@@ -35,16 +35,6 @@ if ($student) {
   echo "Student not found.";
   exit();
 }
-
-// Fetch admin info
-$queryAdmin = 'SELECT * FROM admins WHERE adminID = :adminID';
-$statement = $db->prepare($queryAdmin);
-$statement->bindValue(':adminID', $_SESSION['adminID']);
-$statement->execute();
-$admin = $statement->fetch();
-$statement->closeCursor();
-
-$imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.jpg';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,44 +46,23 @@ $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.
   <script src="../scripts/app.js" defer></script>
 </head>
 <body>
-<?php include('../admin_details.php'); ?>
-<header class="header">
-  <div class="logo"><img src="../images/logo.png" alt="Logo" height="100" width="100"></div>
-  <nav class="nav">
-    <a href="../admin_dashboard.php">Dashboard</a>
-    <a href="../manage_instructor.php" class="active">Manage Instructors</a>
-    <a href="../manage_student.php">Manage Students</a>
-    <a href="../manage_course.php">Manage Courses</a>
-    <a href="../manage_task.php">Tasks</a>
-  </nav>
-  <div class="user-info">Hi, <?php echo $_SESSION['fullName']; ?>
-    <div class="profile-wrapper">
-      <div class="profile-circle">
-        <img src="<?php echo htmlspecialchars('../images/' . $imageFile); ?>" width="40" height="40" alt="Profile Picture" id="profilePicture" />
-      </div>
-      <div class="logOutBox">
-        <a href="#" onclick="openUpdateAdmin();">Update Profile</a>
-        <a href="admin_logout.php" style="color:#C21807;">Log Out</a>
+  <?php include('../admin_details.php'); ?>
+  <?php include('../header.php'); ?>
+  <main id="viewDetailsMain">
+    <div id="container">
+      <h1>Student Details</h1>
+      <h2><?php echo $firstName . ' ' . $lastName; ?></h2>
+      <img src="<?php echo htmlspecialchars('../images/' . $imageName); ?>" alt="Student Image" width="150" height="150">
+      <p><strong>Date of Birth: &nbsp;</strong> <?php echo $dob; ?></p>
+      <p><strong>Status: &nbsp;</strong> <?php echo $status; ?></p>
+      <p><strong>Phone Number: &nbsp;</strong> <?php echo $phoneNumber; ?></p>
+      <p><strong>Email Address: &nbsp;</strong> <?php echo $emailAddress; ?></p>
+      <p><strong>Mailing Address: &nbsp;</strong> <?php echo $mailingAddress; ?></p>
+      <div class="form-row">
+        <button type="button" class="cancel" onclick="window.location.href='../admin_dashboard.php';">Back to Dashboard</button>
+        <button type="button" class="cancel" onclick="window.location.href='../manage_student.php';">Back to Student List</button>
       </div>
     </div>
-  </div>
-</header>
-
-<main id="viewDetailsMain">
-  <div id="container">
-    <h1>Student Details</h1>
-    <h2><?php echo $firstName . ' ' . $lastName; ?></h2>
-    <img src="<?php echo htmlspecialchars('../images/' . $imageName); ?>" alt="Student Image" width="150" height="150">
-    <p><strong>Date of Birth: &nbsp;</strong> <?php echo $dob; ?></p>
-    <p><strong>Status: &nbsp;</strong> <?php echo $status; ?></p>
-    <p><strong>Phone Number: &nbsp;</strong> <?php echo $phoneNumber; ?></p>
-    <p><strong>Email Address: &nbsp;</strong> <?php echo $emailAddress; ?></p>
-    <p><strong>Mailing Address: &nbsp;</strong> <?php echo $mailingAddress; ?></p>
-    <div class="form-row">
-      <button type="button" class="cancel" onclick="window.location.href='../admin_dashboard.php';">Back to Dashboard</button>
-      <button type="button" class="cancel" onclick="window.location.href='../manage_student.php';">Back to Student List</button>
-    </div>
-  </div>
-</main>
+  </main>
 </body>
 </html>

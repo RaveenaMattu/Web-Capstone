@@ -29,28 +29,7 @@ $imageFile = (!empty($admin['imageName'])) ? $admin['imageName'] : 'placeholder.
 </head>
 <body>
   <?php include('../admin_details.php'); ?>
-  <header class="header">
-    <div class="logo"><img src="../images/logo.png" alt="Logo" height="100" width="100"></div>
-
-    <nav class="nav">
-      <a href="../admin_dashboard.php">Dashboard</a>
-      <a href="../manage_instructor.php">Manage Instructors</a>
-      <a href="../manage_student.php" class="active">Manage Students</a>
-      <a href="../manage_course.php">Manage Courses</a>
-      <a href="../manage_task.php">Tasks</a>
-    </nav>
-    <div class="user-info">Hi, <?php echo $_SESSION['fullName']; ?>
-      <div class="profile-wrapper">
-          <div class="profile-circle">
-            <img src="<?php echo htmlspecialchars('../images/' . $imageFile); ?>" width="40" height="40" alt="Profile Picture" id="profilePicture">
-          </div>
-          <div class="logOutBox">
-            <a href="#" onclick="openUpdateAdmin();">Update Profile</a>
-        <a href="admin_logout.php" style="color:#C21807;">Log Out</a>
-          </div>
-      </div>      
-    </div>  
-  </header> 
+  <?php include('../header.php'); ?>
   <main id="addInstructorMain">
     <h2>Add New Student</h2>
     <?php if (isset($_SESSION['error'])): ?>
