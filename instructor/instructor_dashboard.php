@@ -76,10 +76,12 @@
       <h4>Pending Tasks <a href="instructor_tasks.php">View All >></a></h4>
       <ul class="task-list">
         <?php
-        if ($tasks) {
+        if (count($tasks) > 0) {
           foreach ($tasks as $task) {
             echo '<li style="list-style-type: disc;">'.htmlspecialchars($task['taskDescription']).'</li>';
           }
+        } else {
+          echo '<p>No Pending tasks.</p>';
         }
         ?>
       </ul>
