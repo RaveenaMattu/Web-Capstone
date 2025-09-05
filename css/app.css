@@ -341,13 +341,14 @@ footer {
   object-fit: cover;
   display: block;
 }
-.nav {
+.header .nav {
   text-align: center;
   align-self: end;
-  padding-bottom: 30px;
+  padding-bottom: 30px !important;
+  display: inline-block !important; 
 }
 
-.nav a {
+.header .nav a {
   margin: 0 50px;
   text-decoration: none;
   color: black;
@@ -355,10 +356,11 @@ footer {
   font-weight: 550;
   display: inline-block;
   padding-bottom: 4px;
+
 }
 
-.nav .active {
-  border-bottom: 2px solid #2f65f9;
+.header .nav .active {
+   border-bottom: 2px solid #2f65f9 !important;
 }
 
 .user-info {

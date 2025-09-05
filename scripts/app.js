@@ -1,44 +1,71 @@
 console.log("JS loaded");
+
 /**************************************/
 /*           SHOW ADMIN LOGIN         */
 /**************************************/
 let adminLightbox = document.querySelector('#adminLightbox');
-
 function openAdminLogin() {
   console.log('Opening admin login lightbox');
-  adminLightbox.style.visibility = 'visible';
+  if(adminLightbox) adminLightbox.style.visibility = 'visible';
 }
+
 /**************************************/
-/*           OPEN ADMIN LOGOUT        */
+/*      SHOW LOGOUT / PROFILE MENU    */
 /**************************************/
 document.addEventListener("DOMContentLoaded", () => {
   const profileWrapper = document.querySelector('.profile-wrapper');
   const logOutBox = document.querySelector('.logOutBox');
 
   if (profileWrapper && logOutBox) {
+    // Show logout box when hovering profile wrapper
     profileWrapper.addEventListener("mouseenter", () => {
       logOutBox.style.visibility = "visible";
     });
 
+    // Hide logout box only when NOT hovering profile wrapper OR logOutBox
+    profileWrapper.addEventListener("mouseleave", (e) => {
+      // Delay to allow moving to the logOutBox
+      setTimeout(() => {
+        if (!profileWrapper.matches(':hover') && !logOutBox.matches(':hover')) {
+          logOutBox.style.visibility = "hidden";
+        }
+      }, 50);
+    });
+
+    // Also hide when leaving the logout box itself
     logOutBox.addEventListener("mouseleave", () => {
-      logOutBox.style.visibility = "hidden";
+      if (!profileWrapper.matches(':hover')) {
+        logOutBox.style.visibility = "hidden";
+      }
     });
   }
 });
+
+
 /**************************************/
-/*             UPDATE ADMIN           */
+/*         OPEN UPDATE PROFILE        */
 /**************************************/
-let updateAdmin = document.querySelector('#updateAdmin');
-function openUpdateAdmin() {
-  updateAdmin.style.visibility = 'visible';
+function openUpdateProfile() {
+  const role = document.body.dataset.role; // role set in PHP
+  const modalId = role === 'admin' ? '#updateAdmin'
+                 : role === 'Instructor' ? '#updateInstructor'
+                 : '#updateStudent';
+  const modal = document.querySelector(modalId);
+  if(modal) modal.style.visibility = 'visible';
 }
-function closeUpdateAdmin() {
-  updateAdmin.style.visibility = 'hidden';
+
+function closeUpdateProfile() {
+  const role = document.body.dataset.role;
+  const modalId = role === 'admin' ? '#updateAdmin'
+                 : role === 'Instructor' ? '#updateInstructor'
+                 : '#updateStudent';
+  const modal = document.querySelector(modalId);
+  if(modal) modal.style.visibility = 'hidden';
 }
+
 /**************************************/
 /*        OPEN DELETE POPUP           */
 /**************************************/
-
 const overlay = document.getElementById('overlay');
 const deletePopup = document.getElementById('deletePopup');
 const popupDeleteForm = document.getElementById('popupDeleteForm');
@@ -52,11 +79,6 @@ document.querySelectorAll('.deleteForm').forEach(form => {
     const instructorInput = form.querySelector('input[name="instructorID"]');
     const courseInput = form.querySelector('input[name="courseID"]');
     const taskInput = form.querySelector('input[name="taskID"]');
-
-    console.log('Clicked delete form', form);
-    console.log('Student:', studentInput?.value);
-    console.log('Instructor:', instructorInput?.value);
-    console.log('Course:', courseInput?.value);
 
     if (studentInput && studentInput.value) {
       popupRecordID.name = 'studentID';
@@ -74,16 +96,15 @@ document.querySelectorAll('.deleteForm').forEach(form => {
       popupRecordID.name = 'taskID';
       popupRecordID.value = taskInput.value;
       popupDeleteForm.action = 'manage_task/delete_task.php';       
-    }
-    else {
+    } else {
       alert('No valid record selected for deletion.');
+      return;
     }
-    // Show delete popup
-      overlay.style.display = 'block';
-      deletePopup.style.display = 'block';
+
+    overlay.style.display = 'block';
+    deletePopup.style.display = 'block';
   });
 });
-
 
 function closePopup() {
   overlay.style.display = 'none';
@@ -91,5 +112,4 @@ function closePopup() {
   popupRecordID.name = '';
   popupRecordID.value = '';
   popupDeleteForm.action = '';
-} // closePopup function
-
+}

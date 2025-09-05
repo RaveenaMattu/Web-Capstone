@@ -1,63 +1,71 @@
 <?php
-session_start();
-require_once('../database.php');
+  ini_set('display_errors','1');
+  ini_set('display_startup_errors','1');
+  error_reporting(E_ALL);
 
-if (!isset($_SESSION['isLoggedIn']) || $_SESSION['role'] !== 'Instructor') {
+  session_start();
+  require_once('../database.php');
+
+  if (!isset($_SESSION['isLoggedIn']) || $_SESSION['role'] !== 'Instructor') {
     header('Location: ../login.php');
     exit();
-}
+  }
 
-$instructorID = $_SESSION['userID'];
-$fullName = $_SESSION['fullName'];
+  $instructorID = $_SESSION['userID'];
+  $fullName = $_SESSION['fullName'];
+  $role = $_SESSION['role'];
 
-// Fetch instructor details
-$queryInstructor = 'SELECT * FROM instructors WHERE instructorID = :id';
-$statement = $db->prepare($queryInstructor);
-$statement->bindValue(':id', $instructorID);
-$statement->execute();
-$instructor = $statement->fetch(PDO::FETCH_ASSOC);
-$statement->closeCursor();
-$imageFile = (!empty($instructor['imageName'])) ? $instructor['imageName'] : 'placeholder.jpg';
+  // Fetch instructor details
+  $queryInstructor = 'SELECT * FROM instructors WHERE instructorID = :id';
+  $statement = $db->prepare($queryInstructor);
+  $statement->bindValue(':id', $instructorID);
+  $statement->execute();
+  $instructor = $statement->fetch(PDO::FETCH_ASSOC);
+  $statement->closeCursor();
+  $imageFile = (!empty($instructor['imageName'])) ? $instructor['imageName'] : 'placeholder.jpg';
 
-// Add new task
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['taskTitle'])) {
-    $taskTitle = filter_input(INPUT_POST, 'taskTitle', FILTER_SANITIZE_STRING);
-    $taskDescription = filter_input(INPUT_POST, 'taskDescription', FILTER_SANITIZE_STRING);
+  // Add new task
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['taskDescription'])) {
+    $taskDescription = filter_input(INPUT_POST, 'taskDescription', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    $insertQuery = "INSERT INTO instructor_tasks (instructorID, taskTitle, taskDescription) 
-                    VALUES (:instructorID, :taskTitle, :taskDescription)";
+    $insertQuery = "INSERT INTO instructor_tasks (instructorID, taskDescription) 
+                    VALUES (:instructorID, :taskDescription)";
     $stmt = $db->prepare($insertQuery);
     $stmt->bindValue(':instructorID', $instructorID);
-    $stmt->bindValue(':taskTitle', $taskTitle);
     $stmt->bindValue(':taskDescription', $taskDescription);
     $stmt->execute();
     $stmt->closeCursor();
 
     header('Location: instructor_tasks.php');
     exit();
-}
+  }
 
-// Mark task complete
-if (isset($_GET['complete'])) {
-    $taskID = intval($_GET['complete']);
-    $updateQuery = "UPDATE instructor_tasks SET isComplete = 1 WHERE taskID = :taskID AND instructorID = :instructorID";
+  // Toggle task completion
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['taskID'], $_POST['isComplete'])) {
+    $taskID = intval($_POST['taskID']);
+    $currentStatus = intval($_POST['isComplete']);
+    $newStatus = ($currentStatus === 1) ? 0 : 1;
+
+    $updateQuery = "UPDATE instructor_tasks SET isComplete = :newStatus 
+                    WHERE taskID = :taskID AND instructorID = :instructorID";
     $stmt = $db->prepare($updateQuery);
-    $stmt->bindValue(':taskID', $taskID);
-    $stmt->bindValue(':instructorID', $instructorID);
+    $stmt->bindValue(':newStatus', $newStatus, PDO::PARAM_INT);
+    $stmt->bindValue(':taskID', $taskID, PDO::PARAM_INT);
+    $stmt->bindValue(':instructorID', $instructorID, PDO::PARAM_INT);
     $stmt->execute();
     $stmt->closeCursor();
 
     header('Location: instructor_tasks.php');
     exit();
-}
+  }
 
-// Fetch tasks
-$query = "SELECT * FROM instructor_tasks WHERE instructorID = :instructorID ORDER BY created_at DESC";
-$stmt = $db->prepare($query);
-$stmt->bindValue(':instructorID', $instructorID);
-$stmt->execute();
-$tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$stmt->closeCursor();
+  // Fetch tasks
+  $query = "SELECT * FROM instructor_tasks WHERE instructorID = :instructorID ORDER BY created_at DESC";
+  $stmt = $db->prepare($query);
+  $stmt->bindValue(':instructorID', $instructorID);
+  $stmt->execute();
+  $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $stmt->closeCursor();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -68,73 +76,90 @@ $stmt->closeCursor();
   <script src="../scripts/app.js" defer></script>
   <link rel="stylesheet" href="../css/app.css"/>
 </head>
-<body>
-<header class="header">
-  <div class="logo"><img src="images/logo.png" alt="Logo" height="100" width="100"></div>
-  <nav class="nav">
-    <a href="instructor_dashboard.php">Dashboard</a>
-    <a href="instructor_courses.php">My Courses</a>
-    <a href="instructor_students.php">My Students</a>
-    <a href="instructor_tasks.php" class="active">Tasks</a>
-  </nav>
-  <div class="user-info">Hi, <?php echo htmlspecialchars($fullName); ?>
-    <div class="profile-wrapper">
-      <div class="profile-circle">
-        <img src="<?php echo htmlspecialchars('../images/' . $imageFile); ?>" width="40" height="40" style="border-radius:50%;" alt="Profile Picture">
-      </div>
-      <div class="logOutBox">
-        <a href="#" onclick="openUpdateInstructor();">Update Profile</a>
-        <a href="logout.php">Log Out</a>
-      </div>
-    </div>      
-  </div>  
-</header>
+<body data-role="<?php echo htmlspecialchars($role); ?>">
+<?php include('instructor_header.php'); ?>
 
-<main class="main-content">
-  <section class="stats">
-    <div class="stat-box"><p>Total Tasks</p><h2><?php echo count($tasks) > 0 ? count($tasks) : "-"; ?></h2></div>
-    <div class="stat-box"><p>Pending Tasks</p><h2><?php echo count(array_filter($tasks, fn($t) => !$t['isComplete'])); ?></h2></div>
-    <div class="stat-box"><p>Completed Tasks</p><h2><?php echo count(array_filter($tasks, fn($t) => $t['isComplete'])); ?></h2></div>
-  </section>
-<section class="tasks-box">
-  <form method="POST" action="">
-    <div class="form-row">
-      <div class="form-group">
-        <input type="text" name="taskTitle" placeholder="Task Title" required>
-      </div>
-      <div class="form-group">
-        <input type="text" name="taskDescription" placeholder="Description (optional)">
+  <main class="main-content">
+
+    <div id="overlay">
+      <div id="deletePopup">
+        <p>Are you sure you want to delete this task?</p>
+        <form id="popupDeleteForm" action="manage_task/delete_task.php" method="post">
+          <input type="hidden" name="taskID" id="popupRecordID" />
+          <div class="popup-buttons">
+            <button type="submit" id="delete" class="confirm">Yes, Delete</button>
+            <button type="button" onclick="closePopup()" id="cancel" class="cancel">No, Cancel</button>
+          </div>
+        </form>
       </div>
     </div>
-    <button type="submit">Add Task</button>
-  </form>
-</section>
+    <section class="tasks-box">
+      <form action="" method="post" id="addUpdateForm" style="border:none; box-shadow:none; padding:0; margin:0;">
+        <?php if (isset($_SESSION['error'])): ?>
+          <p style="color: #C21807;"><?php echo $_SESSION['error']; ?></p>
+          <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+        <h3>Add New Task</h3>
+        <input type="hidden" name="instructorID" value="<?php echo $instructorID; ?>" />
+        <table style="border-collapse: collapse; width: 100%;">
+          <tr>
+            <td style="border-bottom: none;">
+              <input type="text" name="taskDescription" placeholder="Task Description" 
+                    style="width: 400px; padding: 8px 20px;" required>
+            </td>
+            <td style="border-bottom: none;">
+              <button type="submit" class="btn" style="width: 300px; padding: 8px 20px; cursor: pointer; margin:0;">Add Task</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </section>
 
+    <section class="tasks-box">
+      <div class="all-tasks">
+        <h3>All Tasks (<?php echo count($tasks); ?>)</h3>
+        <?php if (empty($tasks)): ?>
+          <p>No tasks found. Add a new task above.</p>
+        <?php else: ?>
+          <table style="width: 100%; border-collapse: separate; border-spacing: 0 15px;">
+            <?php foreach ($tasks as $task): ?>
+              <tr>
+                <td style="padding: 0; border-bottom: none;">
+                  <div style="background: #fbf8f8ff; border-radius: 20px; padding: 1px 20px; display: table; width: 100%; box-shadow: 0 2px 4px #0000001a;">
+                    <div style="display: table-row;">
+                      <div style="display: table-cell; text-align: left; vertical-align: middle;<?php echo ($task['isComplete'] == 1 ? 'text-decoration: line-through; color: gray;' : ''); ?>">
+                        <p style="margin: 0;"><?php echo htmlspecialchars($task['taskDescription']); ?></p>
+                      </div>
+                      <div style="display: table-cell; width: 350px; text-align: right; vertical-align: middle;">
+                        <div style="display: inline-block;">
+                          <!-- Toggle Complete Form -->
+                          <form action="" method="post" style="display:inline;">
+                            <input type="hidden" name="taskID" value="<?php echo $task['taskID']; ?>">
+                            <input type="hidden" name="isComplete" value="<?php echo $task['isComplete']; ?>">
+                            <button type="submit" style="width: 125px; padding:5px 10px; cursor:pointer; margin:0 10px;background-color: <?php echo ($task['isComplete'] == 0 ? '#eca726ff' : '#389a4dff'); ?>;">
+                              <?php echo $task['isComplete'] == 1 ? 'Completed' : 'Pending'; ?>
+                            </button>
+                          </form>
 
-<section class="tasks-list">
-  <?php if(count($tasks) > 0): ?>
-    <ol>
-      <?php foreach($tasks as $task): ?>
-        <li class="task-item <?php echo $task['isComplete'] ? 'completed' : ''; ?>">
-          <div class="task-content">
-            <p><?php echo htmlspecialchars($task['taskDescription']); ?></p>
-          </div>
-          <div class="task-action">
-            <?php if(!$task['isComplete']): ?>
-              <a href="?complete=<?php echo $task['taskID']; ?>">Mark Complete</a>
-            <?php else: ?>
-              <span class="done">Completed</span>
-            <?php endif; ?>
-          </div>
-        </li>
-      <?php endforeach; ?>
-    </ol>
-  <?php else: ?>
-    <p>No tasks yet.</p>
-  <?php endif; ?>
-</section>
-
-</main>
+                          <!-- Delete Task Form -->
+                          <form class="inline-form deleteForm" method="post">
+                            <input type="hidden" name="taskID" value="<?php echo $task['taskID']; ?>">
+                            <button type="submit" style="font-size: 15px;padding:5px 10px; cursor:pointer; background:#bbb; color:#fff; border:none; margin:0 10px;">
+                              Remove
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </table>
+        <?php endif; ?>
+      </div>
+    </section>
+  </main>
 
 <footer class="footer">
   © 2025 SMART Learning Pod by Raveena Mattu. All Rights Reserved.

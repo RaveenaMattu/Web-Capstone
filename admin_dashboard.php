@@ -2,6 +2,7 @@
   session_start();
   require_once('database.php');
   $username = $_SESSION['fullName'];
+  $role = $_SESSION['role'];
  
 
 $queryAdmin = 'SELECT * FROM admins WHERE username = :username';
@@ -59,7 +60,7 @@ $statement->closeCursor();
   <script src="scripts/app.js" defer></script>
   <link rel="stylesheet" href="css/app.css"/>
 </head>
-<body>
+<body data-role="<?php echo htmlspecialchars($role); ?>">
   <?php include('admin_details.php'); ?>
   <?php include('header.php'); ?>
   <main class="main-content">
