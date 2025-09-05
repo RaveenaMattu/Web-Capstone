@@ -1,7 +1,7 @@
 <?php
-
- require_once('database.php');
- $username = $_SESSION['fullName'];
+  session_start();
+  require_once('database.php');
+  $username = $_SESSION['fullName'];
  
 
 $queryAdmin = 'SELECT * FROM admins WHERE username = :username';

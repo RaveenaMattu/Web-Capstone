@@ -1,5 +1,4 @@
 <?php
-  session_start();
   // Database connection data source name (DSN)
   $dsn = 'mysql:host=localhost;dbname=learning_pod';
   $username = 'root';

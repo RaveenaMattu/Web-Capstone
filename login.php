@@ -6,13 +6,13 @@
     $password = filter_input(INPUT_POST, 'password');
 
     if (!$emailAddress || !$password) {
-    $_SESSION['error'] = "Missing email or password.";
-    include("index.php");
-    exit();
+        $_SESSION['error'] = "Missing email or password.";
+        header('Location: index.php');
+        exit();
     }
 
     // Fetch admin
-    $query = "SELECT adminID, password, username, imageName FROM admins WHERE emailAddress = :emailAddress";
+    $query = "SELECT * FROM admins WHERE emailAddress = :emailAddress";
     $statement = $db->prepare($query);
     $statement->bindValue(':emailAddress', $emailAddress);
     $statement->execute();
@@ -20,9 +20,9 @@
     $statement->closeCursor();
 
     if (!$admin) {
-    $_SESSION['error'] = "Admin not found.";
-    include("index.php");
-    exit();
+        $_SESSION['error'] = "Admin not found.";
+        header('Location: index.php');
+        exit();
     }
 
     $hashedPassword = $admin['password'];
@@ -48,8 +48,8 @@
         header('Location: admin_dashboard.php');
         exit();
     } else {
-        $_SESSION['error'] = "Password verification failed. Wrong password.";
-        include("index.php");
+        $_SESSION['error'] = "Incorrect Password.";
+        header('Location: index.php');
         exit();
     }
     }
@@ -66,8 +66,8 @@
         header('Location: admin_dashboard.php');
         exit();
     } else {
-        $_SESSION['error'] = "Password verification failed. Wrong password.";
-        include("index.php");
+            $_SESSION['error'] = "Password verification failed. Wrong password.";
+            header('Location: index.php');
         exit();
     }
     }

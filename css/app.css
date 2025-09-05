@@ -70,13 +70,12 @@ main {
 .loginForm h4 {
   font-size: 1.5em;
   color: #2563eb;
-  margin-bottom: 25px;
   text-align: center;
 }
 
 .login-form {
   display: grid;
-  gap: 20px;
+  gap: 10px;
   width: 100%;
 }
 

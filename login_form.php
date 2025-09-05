@@ -4,6 +4,9 @@ session_start();
 
 require('database.php');
 
+$lastRole = $_SESSION['lastRole'] ?? 'Instructor'; 
+unset($_SESSION['lastRole']); 
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,9 +23,13 @@ require('database.php');
     <div class="loginBox">
       <div class="loginForm">
         <h4>Login As</h4>
+        <?php if (isset($_SESSION['error'])): ?>
+          <p style="color: #C21807; margin-top: 0; text-align: center;"><?php echo $_SESSION['error']; ?></p>
+          <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
         <div class="roleToggle">
-          <span class="role active">Instructor</span>
-          <span class="role">Student</span>
+          <span class="role <?php echo $lastRole === 'Instructor' ? 'active' : ''; ?>">Instructor</span>
+          <span class="role <?php echo $lastRole === 'Student' ? 'active' : ''; ?>">Student</span>
         </div>
         <form action="instructor-student-login.php" method="POST" class="login-form">
           <input type="hidden" name="role" id="roleInput" value="Instructor">          

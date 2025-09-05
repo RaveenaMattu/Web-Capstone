@@ -2,13 +2,13 @@
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
-
+session_start();
 require_once('../database.php');
 
 // Make sure user is logged in and is an instructor
 if (!isset($_SESSION['isLoggedIn']) || $_SESSION['role'] !== "Instructor") {
-    header("Location: ../login.php");
-    exit();
+  header("Location: ../login_form.php");
+  exit();
 }
 
 $instructorID = $_SESSION['userID'];
