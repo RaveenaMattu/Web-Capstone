@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
+session_start();
 require('database.php');
 
 if (!isset($_SESSION['isLoggedIn']) || !isset($_SESSION['adminID'])) {
@@ -50,7 +50,7 @@ $statement->closeCursor();
 
   <link rel="stylesheet" href="css/app.css"/>
 </head>
-<body>
+<body data-role="<?= htmlspecialchars($role) ?>">
   <?php include('admin_details.php'); ?>
   <?php include('header.php'); ?>
 

@@ -1,4 +1,5 @@
 <?php
+
 $queryAdmin = 'SELECT * FROM admins WHERE adminID = :adminID';
   $statement = $db->prepare($queryAdmin);
   $statement->bindValue(':adminID', $_SESSION['adminID']);

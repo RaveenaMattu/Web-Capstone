@@ -679,6 +679,9 @@ th {
   font-size: 1em;
   text-align: center;
 }
+#manageInstructorMain > p > a {
+  color: #2563eb;
+}
 button i {
   color: #333;
 }
@@ -744,7 +747,7 @@ input[type="password"],
 input[type="tel"],
 input[type="date"],
 textarea,select,
-input[type="file"] {
+input[type="file"]{
   padding: 10px 14px;
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -965,4 +968,17 @@ textarea:focus {
 .task-action .done {
   color: #808080;
   font-style: italic;
+}
+/*************************************************/
+        /* ADMIN ENROLL STYLES */
+/*************************************************/
+
+.selectCourse {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+}
+.selectCourse > #addUpdateForm {
+  width: 100%;
+  height: auto;
 }

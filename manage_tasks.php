@@ -30,13 +30,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learning Pod - Manage Tasks</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Pod - Manage Tasks</title>
   <script src="scripts/app.js" defer></script>
-<link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/app.css">
 </head>
-<body>
+<body data-role="<?= htmlspecialchars($role) ?>">
   <?php include('admin_details.php'); ?>
   <?php include('header.php'); ?>
   <main class="main-content">

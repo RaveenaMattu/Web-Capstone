@@ -3,10 +3,12 @@ console.log("JS loaded");
 /**************************************/
 /*           SHOW ADMIN LOGIN         */
 /**************************************/
-let adminLightbox = document.querySelector('#adminLightbox');
+var adminLightbox = document.querySelector('#adminLightbox');
 function openAdminLogin() {
   console.log('Opening admin login lightbox');
-  if(adminLightbox) adminLightbox.style.visibility = 'visible';
+  if(adminLightbox) {
+    adminLightbox.style.visibility = 'visible';
+  }
 }
 
 /**************************************/
@@ -66,10 +68,10 @@ function closeUpdateProfile() {
 /**************************************/
 /*        OPEN DELETE POPUP           */
 /**************************************/
-const overlay = document.getElementById('overlay');
-const deletePopup = document.getElementById('deletePopup');
-const popupDeleteForm = document.getElementById('popupDeleteForm');
-const popupRecordID = document.getElementById('popupRecordID');
+var overlay = document.getElementById('overlay');
+var deletePopup = document.getElementById('deletePopup');
+var popupDeleteForm = document.getElementById('popupDeleteForm');
+var popupRecordID = document.getElementById('popupRecordID');
 
 document.querySelectorAll('.deleteForm').forEach(form => {
   form.addEventListener('submit', function(event) {

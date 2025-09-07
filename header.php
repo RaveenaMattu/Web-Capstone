@@ -21,6 +21,7 @@
     <a href="/web-capstone/manage_instructor.php" class="<?= ($current_page == 'manage_instructor.php'|| $current_dir == 'manage_instructor') ? 'active' : '' ?>">Manage Instructors</a>
     <a href="/web-capstone/manage_student.php" class="<?= ($current_page == 'manage_student.php'|| $current_dir == 'manage_student') ? 'active' : '' ?>">Manage Students</a>
     <a href="/web-capstone/manage_course.php" class="<?= ($current_page == 'manage_course.php'|| $current_dir == 'manage_course') ? 'active' : '' ?>">Manage Courses</a>
+    <a href="/web-capstone/pending_enrollments.php" class="<?= ($current_page == 'assign_students.php'|| $current_dir == 'assign_students') ? 'active' : '' ?>">Manage Enrollments</a>
     <a href="/web-capstone/manage_tasks.php" class="<?= ($current_page == 'manage_tasks.php'|| $current_dir == 'manage_task') ? 'active' : '' ?>">Tasks</a>
   </nav>
   <?php include('profile.php'); ?>

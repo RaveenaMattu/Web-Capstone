@@ -1,3 +1,6 @@
+<?php
+  $role = $_SESSION['role'];
+?>
 <body data-role="<?php echo htmlspecialchars($role); ?>">
   <div class="user-info">
     Hi, <?php echo $_SESSION['fullName']; ?>
@@ -8,7 +11,7 @@
       </div>
       <div class="logOutBox">
         <a href="#" onclick="openUpdateProfile();">Update Profile</a>
-        <a href="<?php echo $role === 'admin' ? 'admin_logout.php' : ($role === 'Instructor' ? '../logout.php' : '../logout.php'); ?>" 
+        <a href="<?php echo $role === 'admin' ? '/web-capstone/admin_logout.php' :  '/web-capstone/logout.php'; ?>" 
           style="color: #C21807;">Log Out</a>
       </div>
     </div>
