@@ -50,7 +50,7 @@
           $stmtInsert->bindValue(':studentID', intval($studentID));
           try { $stmtInsert->execute(); } catch (PDOException $e) { continue; }
       }
-      header('Location: assign_students.php?success=1');
+      header('Location: pending_enrollments.php?success=1');
       exit();
   }
 ?>
@@ -59,7 +59,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Assign Students - Admin</title>
+  <title>Manage Enrollments</title>
   <script src="scripts/app.js" defer></script>
   <link rel="stylesheet" href="css/app.css">
   <style>
@@ -89,7 +89,7 @@
 <?php include('header.php'); ?>
 
 <main class="main-content" style=" display:block;">
-    <h2>Manage Enrollments</h2>
+    <h2 style="margin-top: 10px;">Manage Enrollments</h2>
 
 <section class="tasks-box" style="background: transparent; padding: 0; box-shadow: none;">
   <form id="searchForm" method="get" style="width: 100%;">
@@ -150,9 +150,12 @@
 const searchInput = document.querySelector('input[name="search"]');
 searchInput.addEventListener('keyup', function() {
   const query = this.value;
-  fetch('assign_students.php?ajax=1&search=' + encodeURIComponent(query))
+  console.log('Searching:', query);
+
+  fetch('/web-capstone/pending_enrollments.php?ajax=1&search=' + encodeURIComponent(query))
     .then(res => res.json())
     .then(data => {
+      console.log('Returned data:', data);
       const container = document.querySelector('#studentsContainer');
       if (!data.length) {
         container.innerHTML = "<p>No students found.</p>";
@@ -168,7 +171,7 @@ searchInput.addEventListener('keyup', function() {
         html += `
           <tr>
             <td>
-              <input type="checkbox" name="studentIDs[]" value="${student.studentID}">
+              <input type="checkbox" name="studentIDs[]" value="${student.studentID}"  style="transform: scale(1.2);">
             </td>
             <td>${student.firstName} ${student.lastName}</td>
             <td style="color: #888;">${student.email}</td>
