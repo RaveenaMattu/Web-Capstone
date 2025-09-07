@@ -110,7 +110,7 @@ $statement->closeCursor();
         <?php
         if ($tasks) {
           foreach ($tasks as $task) {
-            echo '<li style="list-style-type: disc;">'.htmlspecialchars($task['taskDescription']).'</li>';
+            echo '<li>'.htmlspecialchars($task['taskDescription']).'</li>';
           }
         }
         ?>
