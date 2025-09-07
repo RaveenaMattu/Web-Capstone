@@ -39,6 +39,22 @@
   $stmt->execute();
   $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
   $stmt->closeCursor();
+
+  // Get total students in all courses assigned to this instructor
+  $queryTotalStudents = "
+      SELECT COUNT(DISTINCT studentID) 
+      FROM course_enrollments 
+      WHERE courseID IN (
+          SELECT courseID 
+          FROM courses 
+          WHERE instructorID = :instructorID
+      )
+  ";
+  $statement = $db->prepare($queryTotalStudents);
+  $statement->bindValue(':instructorID', $instructorID, PDO::PARAM_INT);
+  $statement->execute();
+  $totalStudents = (int) $statement->fetchColumn();
+  $statement->closeCursor();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +76,7 @@
       </div>
       <div class="stat-box">
         <p>Total Students</p>
-        <h2><?php echo  "-"; ?></h2>
+        <h2><?php echo $totalStudents ?></h2>
       </div>
       <div class="stat-box">
         <p>Pending Tasks</p>
@@ -78,7 +94,7 @@
         <?php
         if (count($tasks) > 0) {
           foreach ($tasks as $task) {
-            echo '<li style="list-style-type: disc;">'.htmlspecialchars($task['taskDescription']).'</li>';
+            echo '<li>'.htmlspecialchars($task['taskDescription']).'</li>';
           }
         } else {
           echo '<p>No Pending tasks.</p>';
@@ -87,24 +103,44 @@
       </ul>
     </section>
 
-    <section class="active-courses">
-      <h4>My Courses <a href="instructor_courses.php">View All >></a></h4>
-      <div class="courses-grid">
-        <?php if(count($courses) > 0): ?>
-          <?php foreach($courses as $course): ?>
-            <div class="course-card">
-              <div class="left-color">
-                <img src="<?php echo htmlspecialchars('/web-capstone/images/' . $course['imageName']); ?>" alt="Course Image" class="course-image" width="60" height="80">
-              </div>
-              <span style="text-align: center; margin-left: 50px;"><?php echo htmlspecialchars($course['courseName']); ?></span>
-            </div>
-          <?php endforeach; 
+<section class="active-courses">
+  <h4>My Courses <a href="instructor_courses.php">View All >></a></h4>
+  <div class="courses-grid">
+    <?php if(count($courses) > 0): ?>
+      <?php foreach($courses as $course): ?>
+        <?php
+          // Fetch number of students for this course
+          $queryEnrollments = 'SELECT COUNT(*) FROM course_enrollments WHERE courseID = :courseID';
+          $statement = $db->prepare($queryEnrollments);
+          $statement->bindValue(':courseID', $course['courseID'], PDO::PARAM_INT);
+          $statement->execute();
+          $studentCount = (int) $statement->fetchColumn();
+          $statement->closeCursor();
         ?>
-        <?php else: ?>
-          <p>No courses assigned yet.</p>
-        <?php endif; ?>
-      </div>
-    </section>
+        <div class="course-card">
+          <div class="left-color">
+            <img src="<?php echo htmlspecialchars('/web-capstone/images/' . $course['imageName']); ?>" alt="Course Image" class="course-image" width="60" height="80">
+          </div>
+          <div class="course-info">
+            <span style="text-align: center; margin-left: 50px;"><?php echo htmlspecialchars($course['courseName']); ?></span>
+            <br>
+            <?php if($studentCount > 0): ?>
+              <p style="margin: 8px 50px; color: #555; font-size: .8em;">
+                Number of Students: <?php echo $studentCount; ?>
+              </p>
+            <?php else: ?>
+              <p style="margin: 8px 50px; color: #555; font-size: .9em;">No students enrolled yet.</p>
+            <?php endif; ?>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <p>No courses assigned yet.</p>
+    <?php endif; ?>
+  </div>
+</section>
+
+
   </main>
 
   <footer class="footer">
