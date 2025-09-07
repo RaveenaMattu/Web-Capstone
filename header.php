@@ -20,9 +20,69 @@
     <a href="/web-capstone/admin_dashboard.php" class="<?= $current_page == 'admin_dashboard.php' ? 'active' : '' ?>">Dashboard</a>
     <a href="/web-capstone/manage_instructor.php" class="<?= ($current_page == 'manage_instructor.php'|| $current_dir == 'manage_instructor') ? 'active' : '' ?>">Manage Instructors</a>
     <a href="/web-capstone/manage_student.php" class="<?= ($current_page == 'manage_student.php'|| $current_dir == 'manage_student') ? 'active' : '' ?>">Manage Students</a>
-    <a href="/web-capstone/manage_course.php" class="<?= ($current_page == 'manage_course.php'|| $current_dir == 'manage_course') ? 'active' : '' ?>">Manage Courses</a>
-    <a href="/web-capstone/pending_enrollments.php" class="<?= ($current_page == 'assign_students.php'|| $current_dir == 'assign_students') ? 'active' : '' ?>">Manage Enrollments</a>
+    <!-- Academics dropdown -->
+    <div class="dropdown">
+      <a href="#" class="dropbtn <?= in_array($current_page, ['manage_course.php','pending_enrollments.php']) ? 'active' : '' ?>">Academics</a>
+      <div class="dropdown-content">
+        <a href="/web-capstone/manage_course.php">Manage Courses</a>
+        <a href="/web-capstone/pending_enrollments.php">Manage Enrollments</a>
+      </div>
+    </div>
     <a href="/web-capstone/manage_tasks.php" class="<?= ($current_page == 'manage_tasks.php'|| $current_dir == 'manage_task') ? 'active' : '' ?>">Tasks</a>
   </nav>
   <?php include('profile.php'); ?>
 </header>
+
+<style>
+.nav .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav .dropbtn {
+  cursor: pointer;
+  text-decoration: none;
+  padding: 10px 15px;
+  display: inline-block;
+}
+
+/* Dropdown content */
+.nav .dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  min-width: 300px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.02);
+  z-index: 100;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Dropdown links */
+.nav .dropdown-content a {
+  display: block;
+  padding: 8px 50px;
+  color: #333;
+  text-decoration: none;
+  margin: 5px auto;
+  text-align: left;
+}
+
+.nav .dropdown-content a:hover {
+  background-color: #f0f0f0;
+}
+
+/* Show dropdown on hover */
+.nav .dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Active button styling */
+.nav .dropdown.active > .dropbtn {
+  font-weight: bold;
+}
+
+</style>
