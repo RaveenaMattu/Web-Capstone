@@ -20,54 +20,128 @@ $statement->closeCursor();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Courses - Instructor</title>
-    <script src="../scripts/app.js" defer></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/web-capstone/css/app.css">
-  </head>
-  <body data-role="<?php echo htmlspecialchars($role); ?>">
-    <?php include('instructor_header.php'); ?>
-      <div class="container my-5 d-flex justify-content-center">
-        
-        <div class="row g-4"> <!-- Increased gutter from g-1 to g-4 -->
-          <?php if (count($courses) > 0): ?>
-            <?php foreach ($courses as $course): ?>
-              <div class="col-md-5 d-flex justify-content-center"> <!-- centers card in column -->
-                <div class="card shadow-sm border-0" style="width: 280px; height: 230px;">
-                  <?php if (!empty($course['imageName'])): ?>
-                    <img src="<?php echo '/web-capstone/images/' . htmlspecialchars($course['imageName']); ?>" 
-                        class="card-img-top" alt="Course Image" style="height: 100px; object-fit: cover;">
-                  <?php else: ?>
-                    <img src="/web-capstone/images/placeholder.jpg" 
-                        class="card-img-top" alt="No Image" style="height: 100px; object-fit: cover;">
-                  <?php endif; ?>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Courses - Instructor</title>
+  <script src="../scripts/app.js" defer></script>
+  <link rel="stylesheet" href="/web-capstone/css/app.css">
+  <style>
+    .courses-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+    }
 
-                  <div class="card-body d-flex flex-column">
-                    <h5 class="card-title"><?php echo htmlspecialchars($course['courseName']); ?></h5>
-                    <p class="card-text"><?php echo htmlspecialchars($course['courseDescription']); ?></p>
+    .course-card {
+      width: 480px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      background-color: #fff;
+      transition: transform 0.2s ease;
+    }
 
-                    <div class="mt-auto d-flex justify-content-between">
-                      <a href="upload_materials.php?courseID=<?php echo $course['courseID']; ?>" 
-                        class="btn btn-primary btn-sm" style="background: #2f65f9;">Add Materials</a>
-                      <a href="edit_course.php?courseID=<?php echo $course['courseID']; ?>" 
-                        class="btn btn-secondary btn-sm">Edit</a>
-                    </div>
-                  </div>
-                </div>
+    .course-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .course-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+
+    .course-body {
+      padding: 10px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .course-title {
+      display: flex;
+      justify-content: space-between; 
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .course-name {
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+
+    .course-code {
+      font-size: 0.85em;
+      font-weight: normal;
+      color: #888;
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+
+    .course-description {
+      font-size: 0.9em;
+      color: #555;
+      flex: 1;
+      margin-bottom: 10px;
+    }
+
+    .course-actions {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .btn {
+      padding: 5px 10px;
+      font-size: 0.85em;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .btn-primary { background-color: #2f65f9; }
+    .btn-secondary { background-color: #888; }
+    .btn:hover { opacity: 0.9; }
+  </style>
+</head>
+<body data-role="<?php echo htmlspecialchars($_SESSION['role']); ?>">
+  <?php include('instructor_header.php'); ?>
+<main class="main-content" style="display: block;">
+  <div class="courses-grid">
+    <?php if (count($courses) > 0): ?>
+      <?php foreach ($courses as $course): ?>
+        <div class="course-card">
+          <img src="<?php echo !empty($course['imageName']) ? '/web-capstone/images/' . htmlspecialchars($course['imageName']) : '/web-capstone/images/placeholder.jpg'; ?>" alt="Course Image">
+
+          <div class="course-body">
+            <div>
+              <div class="course-title">
+                <span class="course-name"><?php echo htmlspecialchars($course['courseName']); ?></span>
+                <span class="course-code"><?php echo htmlspecialchars($course['courseCode']); ?></span>
               </div>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <div class="col-12">
-              <div class="alert alert-warning">No courses assigned.</div>
+              <div class="course-description"><?php echo htmlspecialchars($course['description']); ?></div>
             </div>
-          <?php endif; ?>
+            <div class="course-actions">
+              <a href="instructor_manage_course.php?courseID=<?php echo $course['courseID']; ?>" class="btn btn-primary">Manage Course</a>
+            </div>
+          </div>
         </div>
-              <!-- <div class="row"> <a href="instructor_dashboard.php" class="btn btn-outline-secondary">Back to Dashboard</a> </div> </div> -->
-
-      </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <p style="text-align: center; margin-top: 20px;">No courses assigned.</p>
+    <?php endif; ?>
+  </div>
+    </main>
+  <footer class="footer">
+    © 2025 SMART Learning Pod by Raveena Mattu. All Rights Reserved.
+  </footer>
+</body>
 </html>
