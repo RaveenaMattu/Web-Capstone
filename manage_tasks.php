@@ -85,7 +85,7 @@
             <?php foreach ($tasks as $task): ?>
               <tr>
                 <td style="padding: 0; border-bottom: none;">
-                  <div style="background: #fbf8f8ff; border-radius: 20px; padding: 1px 20px; display: table; width: 100%; box-shadow: 0 2px 4px #0000001a;">
+                  <div style="background: #edf4fb; border-radius: 8px; padding: 1px 20px; display: table; width: 100%;">
                     <div style="display: table-row;">
                       <div style="display: table-cell; text-align: left; vertical-align: middle;<?php echo ($task['isComplete'] == 1 ? 'text-decoration: line-through; color: gray;' : ''); ?>">
                         <p style="margin: 0;"><?php echo htmlspecialchars($task['taskDescription']); ?></p>
@@ -96,7 +96,7 @@
                           <form action="manage_task/toggle_task.php" method="post" style="display:inline;">
                             <input type="hidden" name="taskID" value="<?php echo $task['taskID']; ?>">
                             <input type="hidden" name="isComplete" value="<?php echo $task['isComplete']; ?>">
-                            <button type="submit" style="width: 125px; padding:5px 10px; cursor:pointer; margin:0 10px;background-color: <?php echo ($task['isComplete'] == 0 ? '#eca726ff' : '#389a4dff'); ?>;">
+                            <button type="submit" style="width: 125px; padding:5px 10px; cursor:pointer; margin:0 10px;background-color: <?php echo ($task['isComplete'] == 0 ? '#e7b65bff' : '#50ad64ff'); ?>;">
                               <?php echo $task['isComplete'] == 1 ? 'Completed' : 'Pending'; ?>
                             </button>
                           </form>
