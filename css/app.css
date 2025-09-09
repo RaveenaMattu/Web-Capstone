@@ -60,28 +60,55 @@ main {
   margin: auto;
 }
 
+.blueSection {
+  width: 100%;
+  height: 420px; 
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+.blueSection img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Login form container */
 .loginForm {
-  padding: 30px 50px;
+  padding-left: 80px;
+  padding-top: 20px;
+  border-radius: 12px;
+  background: #fff;
+  width: 100%;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 8px;
 }
 
+/* Heading */
 .loginForm h4 {
-  font-size: 1.5em;
+  font-size: 1.8em;
   color: #2563eb;
   text-align: center;
+  margin-bottom: 20px;
 }
 
+/* Form */
 .login-form {
-  display: grid;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  place-items: center;
+  gap: 15px;
   width: 100%;
 }
 
+/* Inputs */
 .login-form input {
   border: none;
-  border-bottom: 1.5px solid #2563eb;
+  border-bottom: 2px solid #2563eb;
   font-size: 1em;
   background: transparent;
   padding: 10px 5px;
@@ -94,37 +121,47 @@ main {
   border-color: #1d4ed8;
 }
 
+/* Button */
 .login-form button {
   border: none;
   background-color: #2563eb;
   color: #fff;
-  border-radius: 25px;
+  border-radius: 10px;
   font-weight: 600;
   font-size: 1em;
-  padding: 10px 0;
+  padding: 12px 0;
   cursor: pointer;
-  width: 40%;
-  justify-self: center;
+  width: 80%;
   transition: background-color 0.3s ease;
+}
+#back {
+  text-decoration: none;
+  text-align: center;
+  background-color: #fff;
+  color: #2563eb;
+}
+#back:hover {
+  text-decoration: underline;
 }
 
 .login-form button:hover {
   background-color: #1d4ed8;
 }
 
+/* Forgot password link */
 .login-form > a {
   text-decoration: none;
   color: #2563eb;
-  font-weight: 400;
   font-size: 0.9em;
   text-align: right;
   display: block;
 }
 
-.blueSection {
-  width: 100%;
-  height: 100%;
-  background-color: #2563eb;
+/* Error message */
+.error {
+  color: #C21807;
+  font-size: 0.9em;
+  text-align: center;
 }
 
 .indexHeader {
@@ -136,34 +173,41 @@ main {
 
 #indexHeaderRight > a{
   text-decoration: none;
-  color: #2563eb;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1em;
+  color: #2563eb;
   letter-spacing: 0.1px;
   
 }
-.button {
+#indexHeaderRight > a:hover {
+  text-decoration: underline;
+}
+#userLogin {
   border: 2px solid #2563eb;
   background: #fff;
   color: #2563eb;
-  border-radius: 30px;
+  border-radius: 8px;
   font-size: 1em;
   cursor: pointer;
-  padding: 10px 50px;
-  margin-left: 20px;
-
+  padding: 10px 30px;
+  margin-left: 50px;
+}
+#userLogin:hover {
+  background: #2563eb;
+  color: #fff;
+  text-decoration: none;
 }
 #index {
   display: grid;
   place-items: center; 
-  padding:50px 200px;
-  grid-template-columns: 2fr 1fr; 
-  gap: 100px; 
+  padding:50px 100px;
+  grid-template-columns: 4fr 2fr; 
+  gap: 40px; 
 }
 .indexText {
   width: 100%;
   height: 400px;
-  padding: 50px 70px;
+  padding: 70px;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -186,14 +230,16 @@ main {
     line-height: 1;
     font-size: 1em;
     font-weight: 450;
-    padding: 40px 0;
+    margin-top: 20px;
     line-height: 1.2;
     text-align: justify;
   }
   .introImg {
   width: 100%;     
   height: 400px; 
-  background: #2563eb;
+  /* background: #2563eb; */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   .indexText > a {
     font-size: 1em;
@@ -213,8 +259,7 @@ main {
   grid-template-columns: repeat(2, 1fr); 
   align-items: center;
   justify-items: center;
-  margin: 20px 0;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .role {

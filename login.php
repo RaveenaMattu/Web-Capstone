@@ -66,7 +66,7 @@
         header('Location: admin_dashboard.php');
         exit();
     } else {
-            $_SESSION['error'] = "Password verification failed. Wrong password.";
+            $_SESSION['error'] = "Incorrect Password.";
             header('Location: index.php');
         exit();
     }
