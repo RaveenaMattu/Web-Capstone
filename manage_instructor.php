@@ -61,6 +61,7 @@ $statement->closeCursor();
     </div> 
 
     <table>
+      <thead>
       <tr>
         <th>Photo</th>
         <th>First Name</th>
@@ -71,6 +72,7 @@ $statement->closeCursor();
         <th>Mailing Address</th>
         <th>Actions</th>
       </tr>
+    </thead>
       <?php foreach ($instructors as $instructor): ?>
       <tr>
         <td><img src="<?php echo htmlspecialchars('./images/' . $instructor['imageName']); ?>" alt="Instructor Image" width="50" height="50"></td>

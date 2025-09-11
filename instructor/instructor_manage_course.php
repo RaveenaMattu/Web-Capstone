@@ -42,7 +42,7 @@ $queryStudents = "
     FROM course_enrollments ce
     JOIN students s ON ce.studentID = s.studentID
     JOIN courses c ON ce.courseID = c.courseID
-    WHERE c.instructorID = :instructorID
+    WHERE c.instructorID = :instructorID AND ce.status = 'enrolled'
     ORDER BY c.courseName, s.firstName
 ";
 $statement = $db->prepare($queryStudents);
@@ -69,8 +69,7 @@ if ($courseID) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manage Course</title>
 <script src="/web-capstone/scripts/app.js" defer></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="/web-capstone/css/app.css">
 <style>
 .main-grid { display: grid; grid-template-columns: 300px 1fr; gap: 30px; padding: 20px 300px; }
@@ -141,7 +140,7 @@ if ($courseID) {
     </div>
 </div>
 
-<footer class="footer" style="text-align:center; padding:20px; margin-top:50px;">
+<footer class="footer">
     © 2025 SMART Learning Pod by Raveena Mattu. All Rights Reserved.
 </footer>
 
@@ -152,6 +151,7 @@ const dynamicContent = document.getElementById('dynamicContent');
 const studentsData = <?= json_encode($students); ?>;
 // Assuming materialsData is your PHP array passed to JS
 const materialsData = <?= json_encode($materials); ?>;
+const selectedCourseID = <?= $courseID ? intval($courseID) : 'null' ?>;
 
 const materialList = document.getElementById('materialList');
 const materialPreview = document.getElementById('materialPreview');

@@ -61,17 +61,20 @@ $statement->closeCursor();
     </div> 
  
     <table>
-      <tr>
-        <th>Photo</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Status</th>
-        <th>Date of Birth</th>
-        <th>Email Address</th>
-        <th>Phone Number</th>
-        <th>Mailing Address</th>
-        <th>Actions</th>
-      </tr>
+      <thead>
+        <tr>
+          <th>Photo</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Status</th>
+          <th>Date of Birth</th>
+          <th>Email Address</th>
+          <th>Phone Number</th>
+          <th>Mailing Address</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
       <?php foreach ($students as $student): ?>
       <tr>
         <td><img src="<?php echo htmlspecialchars('./images/' . $student['imageName']); ?>" alt="Student Image" width="50" height="50"></td>
@@ -124,6 +127,7 @@ $statement->closeCursor();
 
       </tr>
       <?php endforeach; ?>
+          </tbody>
     </table>
     <?php else: ?>
       <p>No student records found.</p>
