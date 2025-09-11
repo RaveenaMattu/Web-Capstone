@@ -19,8 +19,8 @@
        class="<?= $current_page == 'instructor_dashboard.php' ? 'active' : '' ?>">Dashboard</a>
     <a href="/web-capstone/instructor/instructor_courses.php" 
        class="<?= ($current_page == 'instructor_courses.php'|| $current_page == 'instructor_manage_course.php') ? 'active' : '' ?>">My Courses</a>
-    <a href="/web-capstone/instructor/instructor_students.php" 
-       class="<?= $current_page == 'instructor_students.php' ? 'active' : '' ?>">My Students</a>
+    <a href="/web-capstone/instructor/instructor_manage_enrollments.php" 
+       class="<?= $current_page == 'instructor_manage_enrollments.php' ? 'active' : '' ?>">Manage Enrollments</a>
     <a href="/web-capstone/instructor/instructor_tasks.php" 
        class="<?= $current_page == 'instructor_tasks.php' ? 'active' : '' ?>">Tasks</a>
   </nav>

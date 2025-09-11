@@ -38,7 +38,7 @@ unset($_SESSION['lastRole']);
           <button type="submit">Login</button>
         </form>
       </div>
-      <div class="blueSection"><img src="images/userLogin.jpg" alt="user login"></div>
+      <div class="blueSection"><img src="images/adminLogin.jpg" alt="user login"></div>
     </div>
   </main>
   <footer>
