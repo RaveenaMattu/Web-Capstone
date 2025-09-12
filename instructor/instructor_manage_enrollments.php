@@ -4,17 +4,18 @@ ini_set('display_errors','1');
 ini_set('display_startup_errors','1');
 error_reporting(E_ALL);
 
-session_start();
-require_once('../database.php');
+ session_start();
+  require_once('../database.php');
 
-// Ensure user is logged in as Instructor
-if (!isset($_SESSION['isLoggedIn']) || $_SESSION['role'] !== 'Instructor') {
-    header('Location: ../login.php');
+  // Make sure user is logged in and is an instructor
+  if (!isset($_SESSION['isLoggedIn']) || $_SESSION['role'] !== "Instructor") {
+    header("Location: ../login_form.php");
     exit();
-}
+  }
 
-$instructorID = $_SESSION['userID'];
-$role = $_SESSION['role'];
+  $instructorID = $_SESSION['userID'];
+  $fullName = $_SESSION['fullName'];
+  $role = $_SESSION['role'];
 
 // Toggle enrollment status if form submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enrollmentID'], $_POST['status'])) {

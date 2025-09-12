@@ -13,8 +13,19 @@ if (!isset($_SESSION['isLoggedIn']) || $_SESSION['role'] !== 'Instructor') {
     exit();
 }
 
+$instructorID = $_SESSION['userID'] ?? null;
+$role = $_SESSION['role'] ?? null;
+$fullName = $_SESSION['fullName'] ?? 'Instructor';
+
+// Redirect if userID is missing
+if (!$instructorID) {
+    header('Location: ../login.php');
+    exit();
+}
+
 $instructorID = $_SESSION['userID'];
 $role = $_SESSION['role'];
+$fullName = $_SESSION['fullName'];
 
 // Fetch all courses assigned to this instructor
 $stmt = $db->prepare('SELECT * FROM courses WHERE instructorID = :id');
@@ -179,25 +190,45 @@ materialsData.forEach(material => {
   iconContainer.style.display = 'flex';
   iconContainer.style.gap = '5px';
 
-  const deleteBtn = document.createElement('button');
-  deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-  deleteBtn.title = 'Delete';
-  deleteBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    if (confirm('Delete this material?')) {
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = 'instructor_delete_course_material.php';
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = 'materialID';
-      input.value = material.materialID;
-      form.appendChild(input);
-      document.body.appendChild(form);
-      form.submit();
-    }
-  });
+  const editBtn = document.createElement('button');
+    editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+    editBtn.title = 'Edit';
+    editBtn.style.marginRight = '5px';
+    editBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent triggering li click
+        const newTitle = prompt('Update material title:', titleSpan.textContent);
+        if(newTitle) titleSpan.textContent = newTitle;
 
+        // Optional: make AJAX request to update in DB
+        // fetch(`update_material.php?id=${material.id}`, {...})
+    });
+
+ const deleteBtn = document.createElement('button');
+deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+deleteBtn.title = 'Delete';
+
+// Delete action without confirmation
+deleteBtn.addEventListener('click', e => {
+    e.stopPropagation();
+
+    // Create a form dynamically
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'instructor_delete_course_material.php';
+
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'materialID';
+    input.value = material.materialID;
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+
+    // Submit the form
+    form.submit();
+});
+
+  iconContainer.appendChild(editBtn);
   iconContainer.appendChild(deleteBtn);
   li.appendChild(iconContainer);
 
@@ -285,43 +316,33 @@ navItems.forEach(item => {
     } else if (target === 'upload') {
       dynamicContent.innerHTML = `
         <div id="forms">
-      <table style="width:100%; border-collapse: separate; border-spacing: 0 10px;">
-            <h2 style="font-weight: 500; color: #000; text-align: center; padding: 50px 0;"> Upload Course Materials</h2>
+  <h2 style="font-weight: 500; color: #000; text-align: center; padding: 50px 0;">Upload Course Materials</h2>
+  
+  <!-- Upload Course Content -->
+  <form action="add_material.php" method="POST" enctype="multipart/form-data" style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+    <input type="text" id="title" name="title" placeholder="title" required>
+    <input type="file" id="materialFile" name="materialFile" accept="application/pdf" required>
+    <input type="hidden" name="courseID" value="<?= $courseID; ?>">
+    <button type="submit" style="padding:5px 10px;">Upload</button>
+  </form>
 
-      <tbody>
-      <!-- Upload Course Overview -->
-      <tr>
-        <td style="width:30%;"><label for="courseContent">Course Content (PDF):</label></td>
-        <td style="width:60%;"><input type="file" id="materialFile" name="materialFile" accept="application/pdf" required></td>
-        <td><form action="add_material.php" method="POST" enctype="multipart/form-data" style="display:flex; align-items:center; gap:10px; margin-top:15px;"> 
-            <input type="hidden" name="courseID" value="<?= $courseID; ?>"> 
-            <input type="hidden" name="materialFileHidden" id="materialFileHidden">
-            <button type="submit" style="margin-top: 0; padding: 5px 10px;">Upload</button> 
-          </form></td>
-      </tr>
-      <tr>
-        <td style="width:30%;"><label for="overviewFile">Course Overview (PDF):</label></td>
-        <td style="width:40%;"><input type="file" id="overviewFile" name="overviewFile" accept="application/pdf" required></td>
-        <td><form action="upload_overview.php" method="POST" enctype="multipart/form-data" style="margin:0;">
-              <input type="hidden" name="courseID" value="<?= $courseID; ?>">
-              <input type="hidden" name="overviewFileHidden" id="overviewFileHidden">
-              <button type="submit" style="margin-top: 0; padding: 5px 10px;">Upload</button>
-            </form></td>
-      </tr>
+  <!-- Upload Course Overview -->
+  <form action="upload_overview.php" method="POST" enctype="multipart/form-data" style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+    <label for="overviewFile">Course Overview (PDF):</label>
+    <input type="file" id="overviewFile" name="overviewFile" accept="application/pdf" required>
+    <input type="hidden" name="courseID" value="<?= $courseID; ?>">
+    <button type="submit" style="padding:5px 10px;">Upload Overview</button>
+  </form>
 
-      <!-- Upload Textbook -->
-      <tr>
-        <td style="width:30%;"><label for="textbookFile">Textbook (PDF):</label></td>
-        <td style="width:40%;"><input type="file" id="textbookFile" name="textbookFile" accept="application/pdf" required></td>
-        <td><form action="upload_textbook.php" method="POST" enctype="multipart/form-data" style="margin:0;">
-              <input type="hidden" name="courseID" value="<?= $courseID; ?>">
-              <input type="hidden" name="textbookFileHidden" id="textbookFileHidden">
-              <button type="submit" style="margin-top: 0; padding: 5px 10px;">Upload</button>
-            </form></td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Upload Textbook -->
+  <form action="upload_textbook.php" method="POST" enctype="multipart/form-data" style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+    <label for="textbookFile">Textbook (PDF):</label>
+    <input type="file" id="textbookFile" name="textbookFile" accept="application/pdf" required>
+    <input type="hidden" name="courseID" value="<?= $courseID; ?>">
+    <button type="submit" style="padding:5px 10px;">Upload Textbook</button>
+  </form>
 </div>
+
 `;
     }
   });

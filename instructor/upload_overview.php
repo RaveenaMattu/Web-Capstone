@@ -5,14 +5,14 @@ ini_set('display_startup_errors','1');
 error_reporting(E_ALL);
 
 session_start();
+
 require_once('../database.php');
 
 // Ensure user is logged in as Instructor
 if (!isset($_SESSION['isLoggedIn']) || $_SESSION['role'] !== 'Instructor') {
-    header('Location: ../login.php');
-    exit();
+    var_dump($_SESSION);
+exit;
 }
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $instructorID = $_SESSION['userID'];
     $courseID = intval($_POST['courseID']);
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Create uploads directory if not exists
         $uploadDir = '../uploads/course_overviews/';
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
+            mkdir($uploadDir, 0777, true);
         }
 
         // Create unique filename

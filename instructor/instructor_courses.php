@@ -1,14 +1,16 @@
 <?php
-session_start();
-require_once('../database.php');
+ session_start();
+  require_once('../database.php');
 
-// Make sure user is logged in as instructor
-if (!isset($_SESSION['isLoggedIn']) || $_SESSION['role'] !== "Instructor") {
+  // Make sure user is logged in and is an instructor
+  if (!isset($_SESSION['isLoggedIn']) || $_SESSION['role'] !== "Instructor") {
     header("Location: ../login_form.php");
     exit();
-}
+  }
 
-$instructorID = $_SESSION['userID'];
+  $instructorID = $_SESSION['userID'];
+  $fullName = $_SESSION['fullName'];
+  $role = $_SESSION['role'];
 
 // Fetch courses for this instructor
 $queryCourses = 'SELECT * FROM courses WHERE instructorID = :id';
