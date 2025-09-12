@@ -72,14 +72,16 @@ $statement->closeCursor();
   </div>
 
     <table>
-      <tr>
-        <th>Image</th>
-        <th>Course Code</th>
-        <th>Course Name</th>
-        <!-- <th>Description</th> -->
-        <th>Instructor</th>
-        <th>Actions</th>
-      </tr>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Course Code</th>
+          <th>Course Name</th>
+          <!-- <th>Description</th> -->
+          <th>Instructor</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
       <?php foreach ($courses as $course): ?>
         <tr>
           <td>

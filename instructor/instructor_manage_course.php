@@ -71,6 +71,13 @@ if ($courseID) {
     $materials = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $stmt->closeCursor();
 }
+// Fetch updated quizzes for this course
+    $stmtFetch = $db->prepare("SELECT quizID, title FROM quizzes WHERE courseID = :courseID ORDER BY quizID ASC");
+    $stmtFetch->bindValue(':courseID', $courseID, PDO::PARAM_INT);
+    $stmtFetch->execute();
+    $quizzes = $stmtFetch->fetchAll(PDO::FETCH_ASSOC);
+    $stmtFetch->closeCursor();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,7 +109,146 @@ if ($courseID) {
 .dynamic-content th, .dynamic-content td { padding: 10px; text-align: left; border-radius: 8px;}
 .dynamic-content th { background: #0053c8; color: #fff; }
 .dynamic-content tr { background: #edf4fb;}
-#forms tr {background: none;}
+
+.quiz-container {
+  width: 100%;
+}
+
+.quiz-title {
+  text-align: center;
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.quiz-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.quiz-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.quiz-input:focus {
+  border-color: #2f65f9;
+  box-shadow: 0 0 5px rgba(47,101,249,0.3);
+  outline: none;
+}
+
+.question-block {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.question-block h4 {
+  margin: 0 0 5px 0;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.question-block textarea,
+.question-block input,
+.question-block select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95em;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.question-block textarea:focus,
+.question-block input:focus,
+.question-block select:focus {
+  border-color: #2f65f9;
+  box-shadow: 0 0 5px rgba(47,101,249,0.3);
+  outline: none;
+}
+
+.quiz-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-add {
+  background-color: #2f65f9;
+  color: #fff;
+}
+
+.btn-save {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.quiz-list-container {
+  margin-top: 30px;
+}
+
+.quiz-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quiz-list li {
+  padding: 12px 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quiz-list li span {
+  font-weight: 500;
+}
+
+.quiz-list li button {
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: opacity 0.3s;
+}
+
+.quiz-list li button:hover {
+  opacity: 0.8;
+}
+
 </style>
 </head>
 <body data-role="<?= htmlspecialchars($role); ?>">
@@ -169,6 +315,7 @@ const navItems = document.querySelectorAll('.nav-card li');
 const dynamicContent = document.getElementById('dynamicContent');
 const studentsData = <?= json_encode($students); ?>;
 const materialsData = <?= json_encode($materials); ?>;
+const quizData = <?= json_encode($quizzes); ?>;
 const selectedCourseID = <?= $courseID ? intval($courseID) : 'null'; ?>;
 const toggleBtn = document.getElementById('toggleMaterialList');
 const materialListContainer = document.getElementById('materialListContainer');
@@ -300,9 +447,108 @@ navItems.forEach(item => {
       dynamicContent.innerHTML = filtered.length > 0 ? tableHTML : '<p>No students enrolled yet for this course.</p>';
 
     } else if (target === 'quizzes') {
-      dynamicContent.innerHTML = '<p>Quizzes management will appear here.</p>';
+    dynamicContent.innerHTML = `
+        <div class="quiz-container">
+        <h2 class="quiz-title">Create a New Quiz</h2>
+        <form id="quizForm" class="quiz-form">
+          <input type="text" name="quizTitle" placeholder="Quiz Title" required class="quiz-input">
 
-    } else if (target === 'textbook') {
+          <div id="questionsContainer"></div>
+          <h3>Existing Quizzes</h3>
+          <ul id="quizList" class="quiz-list"></ul>
+
+          <div class="quiz-buttons">
+            <button type="button" id="addQuestionBtn" class="btn btn-add">+ Add Question</button>
+            <button type="submit" class="btn btn-save">Save Quiz</button>
+          </div>
+        </form>
+      </div>
+    `;
+
+    const questionsContainer = document.getElementById('questionsContainer');
+    const addQuestionBtn = document.getElementById('addQuestionBtn');
+
+    let questionCount = 0;
+
+    addQuestionBtn.addEventListener('click', () => {
+        questionCount++;
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question-block';
+        questionDiv.style.marginBottom = '15px';
+        questionDiv.innerHTML = `
+            <h4>Question ${questionCount}</h4>
+            <textarea name="question_${questionCount}" placeholder="Enter question" required style="width:100%; padding:5px;"></textarea>
+            <input type="text" name="question_${questionCount}_a" placeholder="Option A" style="margin-bottom: 5px;" required>
+            <input type="text" name="question_${questionCount}_b" placeholder="Option B" style="margin-bottom: 5px;"required>
+            <input type="text" name="question_${questionCount}_c" placeholder="Option C" style="margin-bottom: 5px;"required>
+            <input type="text" name="question_${questionCount}_d" placeholder="Option D" style="margin-bottom: 5px;"required>
+            <select name="question_${questionCount}_correct" required>
+                <option value="">Select Correct Option</option>
+                <option value="a">A</option>
+                <option value="b">B</option>
+                <option value="c">C</option>
+                <option value="d">D</option>
+            </select>
+        `;
+        questionsContainer.appendChild(questionDiv);
+    });
+
+function renderQuizList(quizzes) {
+    const quizList = document.getElementById('quizList');
+    quizList.innerHTML = ''; // Clear previous list
+
+    quizzes.forEach(quiz => {
+        const li = document.createElement('li');
+
+        const titleSpan = document.createElement('span');
+        titleSpan.textContent = quiz.title;
+        li.appendChild(titleSpan);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.addEventListener('click', () => {
+            if (confirm('Delete this quiz?')) {
+                fetch('instructor_delete_quiz.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quizID: quiz.quizID })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) renderQuizList(data.quizzes);
+                });
+            }
+        });
+
+        li.appendChild(deleteBtn);
+        quizList.appendChild(li);
+    });
+}
+
+
+    // Handle form submission
+    document.getElementById('quizForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        formData.append('courseID', selectedCourseID);
+
+        fetch('instructor_add_quiz.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                renderQuizList(data.quizzes);
+                quizForm.reset;
+                document.getElementById('questionsContainer').innerHTML = '';
+            }
+        })
+        .catch(err => console.error(err));
+    });
+}
+ else if (target === 'textbook') {
       const textbookPath = <?= json_encode($course['textbook_pdf_path']); ?>;
       let content = '<div style="margin-top:20px;border-radius:8px;"><h2 style="font-weight: 500; text-align: center;">Textbook</h2>';
       if (textbookPath && textbookPath !== '') {
@@ -320,10 +566,10 @@ navItems.forEach(item => {
   
   <!-- Upload Course Content -->
   <form action="add_material.php" method="POST" enctype="multipart/form-data" style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-    <input type="text" id="title" name="title" placeholder="title" required>
+    <input type="text" id="title" name="title" placeholder="Enter the Content Title" required>
     <input type="file" id="materialFile" name="materialFile" accept="application/pdf" required>
     <input type="hidden" name="courseID" value="<?= $courseID; ?>">
-    <button type="submit" style="padding:5px 10px;">Upload</button>
+    <button type="submit" style="padding:5px 10px; margin-top: 0;">Upload</button>
   </form>
 
   <!-- Upload Course Overview -->
@@ -331,7 +577,7 @@ navItems.forEach(item => {
     <label for="overviewFile">Course Overview (PDF):</label>
     <input type="file" id="overviewFile" name="overviewFile" accept="application/pdf" required>
     <input type="hidden" name="courseID" value="<?= $courseID; ?>">
-    <button type="submit" style="padding:5px 10px;">Upload Overview</button>
+    <button type="submit" style="padding:5px 10px; margin-top: 0;">Upload</button>
   </form>
 
   <!-- Upload Textbook -->
@@ -339,7 +585,7 @@ navItems.forEach(item => {
     <label for="textbookFile">Textbook (PDF):</label>
     <input type="file" id="textbookFile" name="textbookFile" accept="application/pdf" required>
     <input type="hidden" name="courseID" value="<?= $courseID; ?>">
-    <button type="submit" style="padding:5px 10px;">Upload Textbook</button>
+    <button type="submit" style="padding:5px 10px; margin-top: 0; margin-left: 20px;">Upload</button>
   </form>
 </div>
 
