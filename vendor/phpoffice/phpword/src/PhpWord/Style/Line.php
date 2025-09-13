@@ -66,7 +66,7 @@ class Line extends Image
      *
      * @var string
      */
-    private $connectorType = self::CONNECTOR_TYPE_STRAIGHT;
+    private $dbectorType = self::CONNECTOR_TYPE_STRAIGHT;
 
     /**
      * Line Weight.
