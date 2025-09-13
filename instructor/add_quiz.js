@@ -23,6 +23,7 @@ export function initQuizLogic(selectedCourseID) {
     let questions = [];
     let currentQuestionIndex = 0;
     let selectedQuizID = null;
+    const MAX_QUESTIONS = 15; // max limit
 
     // Fetch quizzes
     fetch(`get_quizzes.php?courseID=${selectedCourseID}`)
@@ -55,7 +56,6 @@ export function initQuizLogic(selectedCourseID) {
             btnGroup.style.display = 'none';
             btnGroup.style.marginTop = '5px';
 
-            // Add / Update button
             const addBtn = document.createElement('button');
             addBtn.type = 'button';
             addBtn.textContent = quiz.questions && quiz.questions.length > 0 ? 'Update Quiz' : '+ Add Question';
@@ -65,8 +65,6 @@ export function initQuizLogic(selectedCourseID) {
             addBtn.addEventListener('click', e => {
                 e.stopPropagation();
                 selectedQuizID = quiz.quizID;
-
-                // Map correctly
                 questions = quiz.questions ? quiz.questions.map(q => ({
                     questionID: q.questionID,
                     question_text: q.question_text,
@@ -93,24 +91,19 @@ export function initQuizLogic(selectedCourseID) {
                 renderQuestion(currentQuestionIndex);
             });
 
-            // Delete quiz button
             const deleteBtn = document.createElement('button');
             deleteBtn.type = 'button';
             deleteBtn.textContent = 'Delete';
             deleteBtn.classList.add('btn', 'btn-delete');
             deleteBtn.style.background = "#b50000ff";
-
             deleteBtn.addEventListener('click', e => {
                 e.stopPropagation();
                 if (confirm('Delete this quiz?')) {
                     const formData = new FormData();
                     formData.append("quizID", quiz.quizID);
-
                     fetch('instructor_delete_quiz.php', { method: 'POST', body: formData })
                         .then(res => res.json())
-                        .then(data => {
-                            if (data.success) renderQuizList(data.quizzes);
-                        });
+                        .then(data => { if (data.success) renderQuizList(data.quizzes); });
                 }
             });
 
@@ -159,13 +152,12 @@ export function initQuizLogic(selectedCourseID) {
             <input type="hidden" value="${q.questionID || ''}">
         `;
 
-        // nav + save
         const navDiv = document.createElement('div');
         navDiv.style.marginTop = '10px';
         navDiv.innerHTML = `
             <div style="float:left;">
                 <button type="button" id="prevQBtn" class="btn btn-nav" ${index === 0 ? 'disabled' : ''}>Previous</button>
-                <button type="button" id="nextQBtn" class="btn btn-nav">${index === questions.length - 1 ? 'Add New' : 'Next'}</button>
+                <button type="button" id="nextQBtn" class="btn btn-nav">${index === questions.length - 1 && questions.length < MAX_QUESTIONS ? 'Add New' : 'Next'}</button>
             </div>
             <div style="float:right;">
                 <button type="button" id="saveAllBtn" class="btn btn-save">Save All Questions</button>
@@ -176,7 +168,6 @@ export function initQuizLogic(selectedCourseID) {
 
         questionsContainer.appendChild(questionDiv);
 
-        // inputs
         const textarea = questionDiv.querySelector('textarea');
         const inputs = questionDiv.querySelectorAll('input[type="text"]');
         const select = questionDiv.querySelector('select');
@@ -205,8 +196,14 @@ export function initQuizLogic(selectedCourseID) {
         document.getElementById('nextQBtn').onclick = () => {
             updateCurrent();
             if (currentQuestionIndex === questions.length - 1) {
-                questions.push({ questionID: null, question_text: '', option_a: '', option_b: '', option_c: '', option_d: '', correct_option: '' });
-                currentQuestionIndex++;
+                if (questions.length < MAX_QUESTIONS) {
+                    questions.push({ questionID: null, question_text: '', option_a: '', option_b: '', option_c: '', option_d: '', correct_option: '' });
+                    currentQuestionIndex++;
+                } else {
+                    msgP.style.color = '#aa0303ff';
+                    msgP.textContent = MAX_QUESTIONS+ ' ' + 'questions allowed.';
+                    return;
+                }
             } else {
                 currentQuestionIndex++;
             }
