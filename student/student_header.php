@@ -18,7 +18,7 @@
     <a href="/web-capstone/student/student_dashboard.php" 
        class="<?= $current_page == 'student_dashboard.php' ? 'active' : '' ?>">Dashboard</a>
     <a href="/web-capstone/student/student_courses.php" 
-       class="<?= ($current_page == 'student_courses.php'|| $current_page == 'student_manage_course.php') ? 'active' : '' ?>">My Courses</a>
+       class="<?= ($current_page == 'student_courses.php'|| $current_page == 'student_view_course.php') ? 'active' : '' ?>">My Courses</a>
     <a href="/web-capstone/student/student_tasks.php" 
        class="<?= $current_page == 'student_tasks.php' ? 'active' : '' ?>">Tasks</a>
   </nav>

@@ -146,7 +146,7 @@
               <div class="course-description"><?php echo htmlspecialchars($course['description']); ?></div>
             </div>
             <div class="course-actions">
-              <a href="student_manage_course.php?courseID=<?php echo $course['courseID']; ?>" class="btn btn-primary">Manage Course</a>
+              <a href="student_view_course.php?courseID=<?php echo $course['courseID']; ?>" class="btn btn-primary">Manage Course</a>
             </div>
           </div>
         </div>
