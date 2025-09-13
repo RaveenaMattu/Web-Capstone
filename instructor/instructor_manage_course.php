@@ -221,24 +221,24 @@ if ($courseID) {
 }
 
 .quiz-list li {
-  padding: 12px 15px;
+  padding: 10px 15px;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 
 .quiz-list li span {
   font-weight: 500;
 }
 
 .quiz-list li button {
-  background: #dc3545;
   color: #fff;
   border: none;
   border-radius: 6px;
+  margin-top: 0;
   padding: 5px 10px;
   cursor: pointer;
   font-size: 0.85em;
@@ -310,7 +310,9 @@ if ($courseID) {
   © 2025 SMART Learning Pod by Raveena Mattu. All Rights Reserved.
 </footer>
 
-<script>
+<script type="module">
+
+  import {initQuizLogic} from './add_quiz.js';
 const navItems = document.querySelectorAll('.nav-card li');
 const dynamicContent = document.getElementById('dynamicContent');
 const studentsData = <?= json_encode($students); ?>;
@@ -447,108 +449,11 @@ navItems.forEach(item => {
       dynamicContent.innerHTML = filtered.length > 0 ? tableHTML : '<p>No students enrolled yet for this course.</p>';
 
     } else if (target === 'quizzes') {
-    dynamicContent.innerHTML = `
-        <div class="quiz-container">
-        <h2 class="quiz-title">Create a New Quiz</h2>
-        <form id="quizForm" class="quiz-form">
-          <input type="text" name="quizTitle" placeholder="Quiz Title" required class="quiz-input">
-
-          <div id="questionsContainer"></div>
-          <h3>Existing Quizzes</h3>
-          <ul id="quizList" class="quiz-list"></ul>
-
-          <div class="quiz-buttons">
-            <button type="button" id="addQuestionBtn" class="btn btn-add">+ Add Question</button>
-            <button type="submit" class="btn btn-save">Save Quiz</button>
-          </div>
-        </form>
-      </div>
-    `;
-
-    const questionsContainer = document.getElementById('questionsContainer');
-    const addQuestionBtn = document.getElementById('addQuestionBtn');
-
-    let questionCount = 0;
-
-    addQuestionBtn.addEventListener('click', () => {
-        questionCount++;
-        const questionDiv = document.createElement('div');
-        questionDiv.className = 'question-block';
-        questionDiv.style.marginBottom = '15px';
-        questionDiv.innerHTML = `
-            <h4>Question ${questionCount}</h4>
-            <textarea name="question_${questionCount}" placeholder="Enter question" required style="width:100%; padding:5px;"></textarea>
-            <input type="text" name="question_${questionCount}_a" placeholder="Option A" style="margin-bottom: 5px;" required>
-            <input type="text" name="question_${questionCount}_b" placeholder="Option B" style="margin-bottom: 5px;"required>
-            <input type="text" name="question_${questionCount}_c" placeholder="Option C" style="margin-bottom: 5px;"required>
-            <input type="text" name="question_${questionCount}_d" placeholder="Option D" style="margin-bottom: 5px;"required>
-            <select name="question_${questionCount}_correct" required>
-                <option value="">Select Correct Option</option>
-                <option value="a">A</option>
-                <option value="b">B</option>
-                <option value="c">C</option>
-                <option value="d">D</option>
-            </select>
-        `;
-        questionsContainer.appendChild(questionDiv);
-    });
-
-function renderQuizList(quizzes) {
-    const quizList = document.getElementById('quizList');
-    quizList.innerHTML = ''; // Clear previous list
-
-    quizzes.forEach(quiz => {
-        const li = document.createElement('li');
-
-        const titleSpan = document.createElement('span');
-        titleSpan.textContent = quiz.title;
-        li.appendChild(titleSpan);
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.addEventListener('click', () => {
-            if (confirm('Delete this quiz?')) {
-                fetch('instructor_delete_quiz.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ quizID: quiz.quizID })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) renderQuizList(data.quizzes);
-                });
-            }
-        });
-
-        li.appendChild(deleteBtn);
-        quizList.appendChild(li);
-    });
+        initQuizLogic(selectedCourseID);
+    
 }
 
-
-    // Handle form submission
-    document.getElementById('quizForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const formData = new FormData(this);
-        formData.append('courseID', selectedCourseID);
-
-        fetch('instructor_add_quiz.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                renderQuizList(data.quizzes);
-                quizForm.reset;
-                document.getElementById('questionsContainer').innerHTML = '';
-            }
-        })
-        .catch(err => console.error(err));
-    });
-}
- else if (target === 'textbook') {
+else if (target === 'textbook') {
       const textbookPath = <?= json_encode($course['textbook_pdf_path']); ?>;
       let content = '<div style="margin-top:20px;border-radius:8px;"><h2 style="font-weight: 500; text-align: center;">Textbook</h2>';
       if (textbookPath && textbookPath !== '') {

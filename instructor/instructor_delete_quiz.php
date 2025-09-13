@@ -11,8 +11,12 @@ if (!isset($_SESSION['isLoggedIn']) || $_SESSION['role'] !== 'Instructor') {
 $instructorID = $_SESSION['userID'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get JSON input
+    // Support both JSON and FormData
     $input = json_decode(file_get_contents('php://input'), true);
+    if (!$input) {
+        $input = $_POST;
+    }
+
     $quizID = intval($input['quizID'] ?? 0);
 
     if ($quizID <= 0) {
@@ -21,9 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Check if quiz belongs to a course of this instructor
-    $stmtCheck = $db->prepare("SELECT courseID FROM quizzes q
-                               JOIN courses c ON q.courseID = c.courseID
-                               WHERE q.quizID = :quizID AND c.instructorID = :instructorID");
+    $stmtCheck = $db->prepare("
+        SELECT q.courseID 
+        FROM quizzes q
+        JOIN courses c ON q.courseID = c.courseID
+        WHERE q.quizID = :quizID AND c.instructorID = :instructorID
+    ");
     $stmtCheck->bindValue(':quizID', $quizID, PDO::PARAM_INT);
     $stmtCheck->bindValue(':instructorID', $instructorID, PDO::PARAM_INT);
     $stmtCheck->execute();
@@ -55,9 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmtFetch->execute();
     $quizzes = $stmtFetch->fetchAll(PDO::FETCH_ASSOC);
     $stmtFetch->closeCursor();
-
-    $courseID = $quizzes['courseID'];
-    header("Location: instructor_manage_course.php?courseID=$courseID");
 
     echo json_encode([
         "success" => true,
