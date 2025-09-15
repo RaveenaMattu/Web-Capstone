@@ -283,7 +283,20 @@ if ($courseID) {
             <ul id="materialList"></ul>
         </div>
         <li data-target="student-list">Student List</li>
-        <li data-target="quizzes">Quizzes</li>
+        <li id="quizzesNav">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Quizzes</span>
+            <button id="toggleQuizzesDropdown" style="cursor:pointer; border:none; background:none; font-size:1em;  margin-left: 145px;">
+              <i class="fas fa-chevron-down"></i>
+            </button>
+          </div>
+        </li>
+        <div id="quizzesDropdownContainer" style="overflow:hidden; max-height:0; transition:max-height 0.3s ease; margin-bottom:10px; margin-left:15px;">
+          <ul style="list-style:none;">
+            <li id="btnManageQuizzes" style="padding:8px 12px; cursor:pointer; margin: 10px 0;">Manage Quizzes</li>
+            <li id="btnViewReports" style="padding:8px 12px; cursor:pointer; margin: 10px 0;">View Quiz Submissions</li>
+          </ul>
+        </div>
         <li data-target="textbook">Textbook</li>
         <li data-target="upload">Uploads</li>
       </ul>
@@ -313,6 +326,8 @@ if ($courseID) {
 <script type="module">
 
   import {initQuizLogic} from './add_quiz.js';
+  import { loadInstructorQuizReports } from './quiz_results.js';
+
 const navItems = document.querySelectorAll('.nav-card li');
 const dynamicContent = document.getElementById('dynamicContent');
 const studentsData = <?= json_encode($students); ?>;
@@ -322,6 +337,32 @@ const selectedCourseID = <?= $courseID ? intval($courseID) : 'null'; ?>;
 const toggleBtn = document.getElementById('toggleMaterialList');
 const materialListContainer = document.getElementById('materialListContainer');
 const materialList = document.getElementById('materialList');
+
+const toggleQuizzesBtn = document.getElementById('toggleQuizzesDropdown');
+const quizzesDropdown = document.getElementById('quizzesDropdownContainer');
+
+toggleQuizzesBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (quizzesDropdown.style.maxHeight === '' || quizzesDropdown.style.maxHeight === '0px') {
+    quizzesDropdown.style.maxHeight = quizzesDropdown.scrollHeight + 20 + 'px';
+    toggleQuizzesBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+  } else {
+    quizzesDropdown.style.maxHeight = '0';
+    toggleQuizzesBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+  }
+});
+
+
+document.getElementById('btnManageQuizzes').addEventListener('click', () => {
+
+  initQuizLogic(selectedCourseID); 
+});
+
+document.getElementById('btnViewReports').addEventListener('click', () => {
+
+  loadInstructorQuizReports(<?= $instructorID ?>, selectedCourseID);
+});
+
 
 // Populate material list
 materialsData.forEach(material => {
@@ -449,8 +490,25 @@ navItems.forEach(item => {
       dynamicContent.innerHTML = filtered.length > 0 ? tableHTML : '<p>No students enrolled yet for this course.</p>';
 
     } else if (target === 'quizzes') {
-        initQuizLogic(selectedCourseID);
-    
+    dynamicContent.innerHTML = `
+      <div style="margin-bottom:15px;">
+        <button id="btnEditQuizzes" class="btn btn-add">Manage Quizzes</button>
+        <button id="btnViewReports" class="btn btn-save">View Reports</button>
+      </div>
+      <div id="quizContent"></div>
+    `;
+
+    const quizContent = document.getElementById('quizContent');
+
+    document.getElementById('btnEditQuizzes').addEventListener('click', () => {
+      quizContent.innerHTML = '';
+      initQuizLogic(selectedCourseID); // loads quiz management UI
+    });
+
+    document.getElementById('btnViewReports').addEventListener('click', () => {
+      quizContent.innerHTML = '';
+      loadInstructorQuizReports(<?= $instructorID ?>, selectedCourseID); // loads reports
+    });
 }
 
 else if (target === 'textbook') {
