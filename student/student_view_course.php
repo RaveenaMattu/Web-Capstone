@@ -75,7 +75,7 @@ $stmt->closeCursor();
 .material-item { padding-left: r5px; font-size: 0.95em; color: #555;}
 #materialList li {margin-left: 15px;};
 .right-content { display: grid; grid-template-rows: 1fr;}
-.dynamic-content { display: grid; background: #fff; border-radius: 8px; padding: 20px 50px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); min-height: 700px;}
+.dynamic-content { display: grid; background: #fff; border-radius: 8px; padding:20px 50px 50px 50px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); min-height: 700px;}
 .dynamic-content iframe { width: 100%; height: 600px; border: none; }
 .dynamic-content table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
 .dynamic-content th, .dynamic-content td { padding: 10px; text-align: left; border-radius: 8px;}
@@ -139,7 +139,10 @@ $stmt->closeCursor();
   © 2025 SMART Learning Pod by Raveena Mattu. All Rights Reserved.
 </footer>
 
-<script>
+<script type="module">
+   import {loadStudentQuizzes} from './load_quiz.js';
+
+const studentID = <?= $studentID ? intval($studentID) : 'null'; ?>;
 // JSON data
 const materialsData = <?= json_encode($materials); ?>;
 const classmatesData = <?= json_encode($classmates); ?>;
@@ -207,13 +210,7 @@ document.querySelectorAll('.nav-card li').forEach(item => {
 
     }
     else if(target === 'quizzes') {
-      let html = `<div><h2 style="text-align:center; font-weight: 500;">Quizzes</h2>`;
-      if(quizzesData.length > 0){
-        html += `<ul>`;
-        quizzesData.forEach(q => { html += `<li>${q.title}</li>`; });
-        html += `</ul></div>`;
-      } else { html += `<p style="text-align:center;">No quizzes available yet.</p>`; }
-      dynamicContent.innerHTML = html;
+      loadStudentQuizzes(studentID, <?= $courseID?>);
     }
     else if(target === 'textbook') {
       if('<?= $course['textbook_pdf_path'] ?>'){
