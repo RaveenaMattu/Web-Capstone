@@ -50,7 +50,7 @@ if (isset($_SESSION['error'])): ?>
         <p>Your Path with <span class="blue">AI</span>, <span class="blue">Goals</span>, and <span class="blue">Guidance</span>.</p>
         <p id='intro'>Built with smart technology and human connection at its core, Smart Learning Pod combines AI-assisted evaluation, weekly goal tracking, and peer-powered learning to create a truly personalized experience. Whether you’re mastering new skills, preparing for a career leap, or simply levelling up, Smart Learning Pod gives you the tools, feedback, and coaching you need — every step of the way. Join a platform where learning meets ambition and support meets strategy.</p>
       </div>
-      <div class="introImg"><img src="images/index.jpg" alt="Logo" style=" width: auto; height: 400px; object-fit: contain; object-position: center; border-radius: 8px;"></div>
+      <div class="introImg"><img src="images/index.png" alt="Logo" style=" width: auto; height: 400px; object-fit: contain; object-position: center; border-radius: 8px;"></div>
     </div>
   </main>
   <footer>

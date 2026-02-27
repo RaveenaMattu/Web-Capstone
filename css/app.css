@@ -210,7 +210,7 @@ main {
   padding: 70px;
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
   overflow: hidden; 
 }
   .indexText p {
@@ -227,11 +227,10 @@ main {
     color: #1d4ed8;
   }
   #intro {
-    line-height: 1;
     font-size: 1em;
     font-weight: 450;
     margin-top: 20px;
-    line-height: 1.2;
+    line-height: 1.5;
     text-align: justify;
   }
   .introImg {
@@ -239,7 +238,7 @@ main {
   height: 400px; 
   /* background: #2563eb; */
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
   }
   .indexText > a {
     font-size: 1em;
