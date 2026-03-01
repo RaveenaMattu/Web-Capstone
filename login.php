@@ -66,8 +66,8 @@
         header('Location: admin_dashboard.php');
         exit();
     } else {
-            $_SESSION['error'] = "Incorrect Password.";
-            header('Location: index.php');
+        $_SESSION['error'] = "Incorrect Password.";
+        header('Location: index.php');
         exit();
     }
     }

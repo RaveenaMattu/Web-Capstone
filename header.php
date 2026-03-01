@@ -14,7 +14,7 @@
 <!-- header.php -->
 <header class="header">
   <div class="logo">
-    <img src="/web-capstone/images/logo.png" alt="Logo" height="100" width="100">
+    <a href="/web-capstone/index.php"><img src="/web-capstone/images/logo.png" alt="Logo" height="100" width="100"></a>
   </div>
   <nav class="nav">
     <a href="/web-capstone/admin_dashboard.php" class="<?= $current_page == 'admin_dashboard.php' ? 'active' : '' ?>">Dashboard</a>

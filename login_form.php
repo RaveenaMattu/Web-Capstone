@@ -17,7 +17,7 @@ unset($_SESSION['lastRole']);
   <link rel="stylesheet" href="css/app.css" />
 </head>
 <body>
-  <div class="logo"><img src="images/logo.png" alt="Logo" height="100" width="100"></div>
+  <a href="/web-capstone/index.php"><div class="logo"><img src="images/logo.png" alt="Logo" height="100" width="100"></div></a>
 
   <main>
     <div class="loginBox">
